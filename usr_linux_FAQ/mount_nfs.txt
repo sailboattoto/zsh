@@ -1,0 +1,15 @@
+1.在树莓派和Ubuntu下安装如下：
+
+sudo apt-get install nfs-common nfs-kernel-server
+sudo apt-get install portmap
+
+2.
+sudo vim /etc/exports
+// 树莓派被挂载文件夹 树莓派地址（权限等）
+/home/partimag 192.168.x.x(rw,sync,no_subtree_check)
+
+3.
+ showmount -e //显示是否开启
+
+4.在 Ubuntu 上执行以下命令挂载
+sudo mount -t nfs 192.168.x.x:/home/part /mnt -o nolock

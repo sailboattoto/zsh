@@ -1,0 +1,5 @@
+timedatectl set-time YYYY-MM-DD       更改日期
+timedatectl set-time HH:MM:SS           更改时间
+timedatectl list-timezones                    列出所有时区
+timedatectl set-timezone time-zone   设置时区
+timedatectl set-ntp boolean                 设置NTP服务器

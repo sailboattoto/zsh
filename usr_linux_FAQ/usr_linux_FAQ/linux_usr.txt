@@ -1,0 +1,227 @@
+1、在终端下：
+复制命令：Ctrl + Shift + C 组合键。
+粘贴命令：Ctrl + Shift + V 组合键。
+
+	在浏览器下还是<c-c> ,<c-v>
+2、在控制台下：
+
+复制命令：Ctrl + Insert 组合键　　或　　用鼠标选中即是复制。
+粘贴命令：Shift + Insert 组合键　　或　　单击鼠标滚轮即为粘贴。
+
+3.将后台程序放到前台,例：
+	$ ./test &
+	[1] 29140
+
+	$ fg 1
+
+4. 进程创建 - fork
+	#include <unistd.h>
+	pid_t fork(void);
+
+	创建新的进程，失败时返回-1
+	成功时父进程返回子进程的进程号，子进程返回0
+	子进程继承了父进程的内容
+	父子进程有独立的地址空间，互不影响
+	若父进程先结束，子进程成为孤儿进程，被init进程收养
+	若子进程先结束，父进程如果没有及时回收，子进程变成僵尸进程
+
+	进程结束 - exit/ _exit
+	#include <stdlib.h>
+	#include <unistd.h>
+	void exit(int status);
+	void _exit(int status);
+
+	进程 - execl / execlp
+	#include <unistd.h>
+	int execl(const char *path, const char *arg,...);
+	int execlp(const char *file, const char *arg, ...);
+
+	成功时执行指定的程序;失败时返回EOF
+	path 执行的程序路径和名称
+	arg... 传递给执行的程序的参数列表
+	file 执行的程序的名称，在PATH中查找
+
+	进程- execv / execvp
+	#include <unistd.h>
+	int execv(const char *path, char *const argv[]);
+	int execvp(const char *file, char *const argv[]);
+
+	成功时执行指定的程序：失败时返回EOF
+	arg...封装成指针数组的形式
+
+	进程 - system
+	#include <stdlib.h>
+	int system(const char *command);
+
+	成功时返回命令command的返回值;失败时返回EOF
+	当前进程等待command执行结束后才继续执行
+
+	进程回收 - wait
+	#include <unistd.h>
+	pid_t wait(int *status);
+
+	成功时返回回收的子进程的进程号;失败时返回EOF
+	若子进程没有结束，父进程一直阻塞
+	若有多个子进程，哪个先结束就先回收
+	status指定保存子进程返回值和结束方式的地址
+	status为NULL表示直接释放子进程PCB，不接收返回值
+	例子:
+		int status;
+		pid_t pid;
+		if((pid = fork()) < 0){
+			perror("fork"); exit(-1);
+		}
+		else if(pid == 0){
+			sleep(1);exit(2);
+		}
+		else{
+			wait(&status); printf("%x\n",status);
+		}
+
+	进程返回值和结束方式
+	子进程通过exit / _exit / return 返回某个值(0-255)
+	父进程调用wait(&status)回收
+	WIFEXITED(status)			判断子进程是否正常结束
+	WEXITSTATUS(status)			获取子进程返回值
+	WIFSIGNALED(status)			判断子进程是否被信号结束
+	WTERMSIG(status)			获取结束子进程的信号类型
+
+	进程回收 - waitpid
+	#include <unistd.h>
+	pid_t waitpid(pid_t pid, int *status, int option);
+
+	成功时返回回收的子进程的pid或0; 失败时返回EOF
+	pid可用于指定回收哪个子进程或任意子进程
+	status指定用于保存子进程返回值和结束方式的地址
+	option指定回收方式，0或WNOHANG
+	示例:
+		waitpid(pid,&status,0);
+		waitpid(pid,&status,WNOHANG);
+		waitpid(-1,&status,0);
+		waitpid(-1,&status,WNOHANG);
+	
+5.守护进程
+	守护进程创建1
+	创建子进程，父进程退出
+	if(fork() > 0){
+		exit(0);
+	}
+	子进程变成孤儿进程，被init进程收养
+	子进程在后台运行
+
+	守护进程创建2
+	子进程创建新会话
+	if(setsid() < 0){
+		exit(-1);
+	}
+	子进程成为新的会话组长
+	子进程脱离原先的终端
+
+	守护进程创建3
+	更改当前目录
+	chdir("/");
+	chdir("/tmp");
+
+	守护进程一直在后台运行，其工作目录不能被卸载
+	重新设定当前工作目录cwd
+
+	守护进程创建4
+	重设文件权限掩码
+	if(umask(0) < 0){
+		exit(-1);
+	}
+
+	文件权限掩码设置为0
+	只影响当前进程
+
+	守护进程创建5
+	关闭打开的文件描述符
+	int i;
+	for(i=0;i<getdtablesize();i++){
+		close(i);
+	}
+
+	关闭所有从父进程继承的打开文件
+	已脱离终端，stdin / stdout / stderr无法再使用
+
+	守护进程 - 示例1
+	创建守护进程，每隔1秒将系统时间写入文件time.log
+
+	int main(){
+		pid_t pid;
+		FILE *fp;
+		time_t t;
+		int i;
+
+		if((pid = fork()) < 0){
+			perror("fork"); exit(-1);
+		}
+		else if(pid > 0){
+			exit(0);
+		}
+		setsid();
+		umask(0);
+		chdir("/tmp");
+		for(i=0;i < getdtablesize(); i++){
+			close(i);
+		}
+		if ((fp = fopen("time.log", "a")) == NULL){
+			perror("fopen"); exit(-1);
+		}
+		while(1){
+			time(&t);
+			fprintf(fp, "%s", ctime(&t));
+			fflush(fp);
+			sleep(1);
+		}
+	}
+
+
+6.线程
+	创建线程- pthread_create
+	#include <pthread.h>
+	int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*routine)(void *), void *arg);
+
+	成功返回0,失败返回错误码
+	thread线程对象
+	attr线程属性，NULL代表默认属性
+	routine线程执行的函数
+	arg传递给routine的参数
+
+	线程回收- pthread_join
+	#include <pthread.h>
+	int pthread_join(pthread_t thread, void **retval);
+	成功返回0，失败时返回错误码
+	thread要回收的线程对象
+	调用线程阻塞直到thread结束
+	*retval接收线程thread的返回值
+
+	线程结束- pthread_exit
+	#include <pthread.h>
+	void pthread_exit(void *retval);
+	结束当前线程
+	retval可被其他线程通过pthread_join获取
+	线程私有资源被释放
+
+	char message[32] = "hello world";
+	void *thread_func(void *arg);
+
+	int main(void){
+		pthread_t a_thread;
+		void *result;
+		if (pthread_create(&a_thread, NULL, thread_func, NULL) != 0){
+			printf("fail to pthread_create"); exit(-1);
+		}
+		pthread_join(&a_thread, &result);
+		printf("result is %s\n",result);
+		printf("message is %s\n",message);
+		return 0;
+	}
+
+	void thread_func(void *arg){
+		sleep(1);
+		strcpy(message, "marked by thread");
+		pthread_exit("thank you for waiting for me");
+	}
+
+	$ gcc -o test test.c -lpthread

@@ -1,0 +1,436 @@
+＃i3配置文件（v4）
+＃请参阅http://i3wm.org/docs/userguide.html以获得完整参考！
+
+＃设置mod键（Mod1 = <Alt>，Mod4 = <Super>）
+设置$ mod Mod4
+
+＃设置默认的桌面布局（默认为平铺）
+＃标记的工作区布局<stacking | tabbed>
+
+＃配置边框样式<normal | 1pixel | pixel xx | none | pixel>
+default_border像素1
+default_floating_border正常
+
+＃隐藏边框
+hide_edge_borders没有
+
+＃更改边界
+bindsym $ mod + u边框无
+bindsym $ mod + y边框像素1
+bindsym $ mod + n边界正常
+
+＃窗口标题的字体。除非另外一种字体，酒吧也将使用它
+＃在下面的{}块中使用。
+字体xft：URWGothic-Book 11
+
+＃使用Mouse + $ mod拖动浮动窗口
+float_modifier $ mod
+
+＃启动一个终端
+bindsym $ mod +返回执行程序st
+
+＃启动网易云音乐
+bindsym $ mod + Shift + m exec netease-cloud-music
+
+＃启动一个Webapp
+bindsym $ mod + c exec铬
+
+#exec_always
+exec_always〜/ .config / polybar / launch.sh
+exec_always〜/ start.sh
+exec_always各种各样
+exec_always康普顿
+exec_always fcitx
+
+#new_window 1pixel＃更改窗口
+
+＃杀死焦点窗口
+bindsym $ mod + q杀死
+
+＃启动程序启动器
+#bindsym $ mod + d exec --no-startup-id dmenu_recency
+bindsym $ mod + d执行dmenu_run
+
+＃启动分类菜单
+bindsym $ mod + z exec --no-startup-id morc_menu
+
+################################################ #############################################
+##声音部分-如果您希望以后自动升级Alsa-> Pulseaudio，请不要编辑！ ##
+################################################ #############################################
+
+exec --no-startup-id volumeicon
+bindsym $ mod + Ctrl + m exec终端-e'alsamixer'
+#exec --no-startup-id pulseaudio
+#exec --no-startup-id pa-applet
+#bindsym $ mod + Ctrl + m exec pavucontrol
+
+################################################ #############################################
+
+＃屏幕亮度控制
+＃bindsym XF86MonBrightnessUp exec“ xbacklight -inc 10;通知发送'提高亮度'”
+＃bindsym XF86MonBrightnessDown exec“ xbacklight -dec 10; notify-send'brightness down'”“
+
+＃启动应用程序
+bindsym $ mod + Ctrl + b执行终端-e'bmenu'
+bindsym $ mod + F2执行铬
+bindsym $ mod + F3执行程序pcmanfm
+＃bindsym $ mod + F3执行器游侠
+bindsym $ mod + Shift + F3执行程序pcmanfm_pkexec
+bindsym $ mod + Shift + c exec终端-e'mocp'
+bindsym $ mod + t exec --no-startup-id pkill康普顿
+bindsym $ mod + Ctrl + t exec --no-startup-id compton -b
+bindsym $ mod + Shift + d --release exec“ killall dunst; exec通知发送'restart dunst'”
+bindsym打印执行--no-startup-id i3-scrot
+bindsym $ mod + Print --release exec --no-startup-id i3-scrot -w
+bindsym $ mod + Shift + Print --release exec --no-startup-id i3-scrot -s
+bindsym $ mod + F1 exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
+bindsym $ mod + Ctrl + x --release exec --no-startup-id xkill
+
+＃focus_follows_mouse否
+
+＃改变焦点
+bindsym $ mod + h向左聚焦
+bindsym $ mod + j聚焦
+bindsym $ mod + k向下聚焦
+bindsym $ mod + l聚焦正确
+bindsym $ mod +分号聚焦右
+
+＃或者，您可以使用光标键：
+bindsym $ mod +左焦点
+bindsym $ mod + Down向下聚焦
+bindsym $ mod +向上聚焦
+bindsym $ mod +向右聚焦
+
+＃移动焦点窗口
+bindsym $ mod + Shift + j向左移动
+bindsym $ mod + Shift + k向下移动
+bindsym $ mod + Shift + l向上移动
+bindsym $ mod + Shift +分号向右移动
+
+＃或者，您可以使用光标键：
+bindsym $ mod + Shift + Left向左移动
+bindsym $ mod + Shift + Down向下移动
+bindsym $ mod + Shift + Up向上移动
+bindsym $ mod + Shift + Right向右移动
+
+＃来回工作区（有/没有活动容器）
+workspace_auto_back_and_forth是
+bindsym $ mod + b工作空间back_and_forth
+bindsym $ mod + Shift + b将容器移至工作区back_and_forth;工作区来回
+
+＃分割方向
+bindsym $ mod + Mod1 + h拆分h; exec通知-“水平平铺”发送
+bindsym $ mod + Shift + v分割v; exec通知-垂直发送'tile'
+bindsym $ mod + Shift + q拆分切换
+
+＃切换焦点容器的全屏模式
+bindsym $ mod + f全屏切换
+
+＃更改容器布局（堆叠，选项卡式，切换拆分）
+bindsym $ mod + s布局堆栈
+选项卡上的bindsym $ mod + w布局
+bindsym $ mod + e布局切换拆分
+
+＃切换平铺/浮动
+bindsym $ mod + Shift +空格浮动切换
+
+＃在平铺/浮动窗口之间切换焦点
+bindsym $ mod +空格键mode_toggle
+
+＃切换粘性
+bindsym $ mod + Shift + s粘滞切换
+
+＃聚焦父容器
+bindsym $ mod +焦点父
+
+＃将当前聚焦的窗口移至暂存器
+bindsym $ mod + Shift +减移动暂存器
+
+＃显示下一个暂存器窗口或隐藏聚焦的暂存器窗口。
+＃如果有多个暂存器窗口，则此命令在它们之间循环。
+bindsym $ mod +减暂存器显示
+
+#navigate工作区的下一个/上一个
+bindsym $ mod + Ctrl + Right工作区下一个
+bindsym $ mod + Ctrl + Left工作区上一个
+
+＃工作区名称
+＃显示名称或符号而不是您可以使用的普通工作区编号
+＃像这样：set $ ws1 1：mail
+＃设置$ ws2 2：
+设置$ ws1 1
+设置$ ws2 2
+设置$ ws3 3
+设置$ ws4 4
+设置$ ws5 5
+设置$ ws6 6
+设置$ ws7 7
+设置$ ws8 8
+
+＃切换到工作区
+bindsym $ mod + 1工作区$ ws1
+bindsym $ mod + 2工作区$ ws2
+bindsym $ mod + 3工作区$ ws3
+bindsym $ mod + 4工作区$ ws4
+bindsym $ mod + 5工作区$ ws5
+bindsym $ mod + 6工作区$ ws6
+bindsym $ mod + 7工作区$ ws7
+bindsym $ mod + 8工作区$ ws8
+
+＃将焦点容器移至工作区
+bindsym $ mod + Ctrl + 1将容器移至工作区$ ws1
+bindsym $ mod + Ctrl + 2将容器移至工作区$ ws2
+bindsym $ mod + Ctrl + 3将容器移至工作区$ ws3
+bindsym $ mod + Ctrl + 4将容器移至工作区$ ws4
+bindsym $ mod + Ctrl + 5将容器移动到工作区$ ws5
+bindsym $ mod + Ctrl + 6将容器移动到工作区$ ws6
+bindsym $ mod + Ctrl + 7将容器移至工作区$ ws7
+bindsym $ mod + Ctrl + 8将容器移至工作区$ ws8
+
+＃移到具有焦点容器的工作区
+bindsym $ mod + Shift + 1将容器移动到工作空间$ ws1;工作区$ ws1
+bindsym $ mod + Shift + 2将容器移动到工作区$ ws2;工作区$ ws2
+bindsym $ mod + Shift + 3将容器移至工作区$ ws3;工作区$ ws3
+bindsym $ mod + Shift + 4将容器移动到工作区$ ws4;工作区$ ws4
+bindsym $ mod + Shift + 5将容器移至工作区$ ws5;工作区$ ws5
+bindsym $ mod + Shift + 6将容器移动到工作区$ ws6;工作区$ ws6
+bindsym $ mod + Shift + 7将容器移动到工作区$ ws7;工作区$ ws7
+bindsym $ mod + Shift + 8将容器移至工作区$ ws8;工作区$ ws8
+
+＃在特定的工作区上打开应用程序
+＃分配[class =“ Thunderbird”] $ ws1
+＃分配[class =“ Pale moon”] $ ws2
+＃分配[class =“ Pcmanfm”] $ ws3
+＃分配[class =“ Skype”] $ ws5
+
+＃以浮动模式打开特定的应用程序
+for_window [title =“ alsamixer”]浮动启用边框像素1
+for_window [class =“ calamares”]浮动启用边框正常
+for_window [class =“ Clipgrab”]浮动启用
+for_window [title =“文件传输*”]浮动启用
+for_window [class =“ fpakman”]浮动启用
+for_window [class =“ Galculator”]浮动启用边框像素1
+for_window [class =“ GParted”]浮动启用边框正常
+for_window [title =“ i3_help”]浮动启用粘滞启用边框正常
+for_window [class =“ Lightdm-settings”]浮动启用
+for_window [class =“ Lxappearance”]浮动启用粘滞启用边框正常
+for_window [class =“ Manjaro-hello”]浮动启用
+for_window [class =“ Manjaro Settings Manager”]浮动启用边框正常
+for_window [title =“ MuseScore：Play Panel”]浮动启用
+for_window [class =“ Nitrogen”]浮动启用粘滞启用边界正常
+for_window [class =“ Oblogout”]全屏启用
+for_window [class =“ octopi”]浮动启用
+for_window [title =“关于苍白的月亮”]浮动启用
+for_window [class =“ Pamac-manager”]浮动启用
+for_window [class =“ Pavucontrol”]浮动启用
+for_window [class =“ qt5ct”]浮动启用粘滞启用边框正常
+for_window [class =“ Qtconfig-qt4”]浮动启用粘滞启用边框正常
+for_window [class =“ Simple-scan”]浮动启用边框正常
+for_window [class =“（？i）System-config-printer.py”]浮动启用边框正常
+for_window [class =“ Skype”]浮动启用边框正常
+for_window [class =“ Timeset-gui”]浮动启用边框正常
+for_window [class =“（？i）virtualbox”]浮动启用边框正常
+for_window [class =“ Xfburn”]浮动启用
+
+＃自动切换到带有紧急窗口的工作区
+for_window [紧急=最新]焦点
+
+＃重新加载配置文件
+bindsym $ mod + F5重新加载
+
+＃就地重新启动i3（保留您的布局/会话，可用于升级i3）
+bindsym $ mod + Shift + r重新启动
+
+＃退出i3（使您退出X会话）
+“ bindsym $ mod + Shift + e exec” i3-nagbar -t warning -m'您按下了退出快捷键。您真的要退出i3吗？这将结束您的X会话。' -b'是，退出i3''i3-msg退出'“
+
+＃设置关闭，重新启动和锁定功能
+bindsym $ mod + 0模式“ $ mode_system”
+设置$ mode_system（l）ock，（e）xit，switch_（u）ser，（s）挂起，（h）ibernate，（r）eboot，（Shift + s）关机
+模式“ $ mode_system” {
+    bindsym l exec --no-startup-id i3exit锁定，模式为“默认”
+    bindsym s exec --no-startup-id i3exit挂起，模式为“默认”
+    bindsym u exec --no-startup-id i3exit switch_user，模式“默认”
+    bindsym e exec --no-startup-id i3exit注销，模式为“默认”
+    bindsym h exec --no-startup-id i3exit休眠，模式为“默认”
+    bindsym r exec --no-startup-id i3exit重新启动，模式为“默认”
+    bindsym Shift + s exec --no-startup-id i3退出关机，模式为“默认”
+
+    ＃退出系统模式：“ Enter”或“ Escape”
+    bindsym返回模式“默认”
+    bindsym转义模式“默认”
+}
+
+＃调整窗口大小（您也可以使用鼠标）
+bindsym $ mod + r模式“调整大小”
+模式“调整大小” {
+        ＃一旦进入调整大小模式，这些绑定就会触发
+        ＃向左按下将缩小窗口的宽度。
+        ＃右按将增加窗口的宽度。
+        ＃向上按将缩小窗口的高度。
+        ＃按下将增加窗口的高度。
+        bindsym h调整大小以增加宽度10 px或10 ppt
+        bindsym j调整大小可将高度增加10像素或10 ppt
+        bindsym k调整收缩高度10 px或10 ppt
+        bindsym l调整大小收缩宽度10 px或10 ppt
+        bindsym分号调整大小以增加宽度5 px或5 ppt
+
+        ＃相同的绑定，但是对于箭头键
+        bindsym左调整大小缩小宽度10 px或10 ppt
+        bindsym向下调整大小以增加高度10 px或10 ppt
+        bindsym向上调整缩小高度10 px或10 ppt
+        正确调整大小以增加宽度10 px或10 ppt
+
+        ＃退出调整大小模式：Enter或Escape
+        bindsym返回模式“默认”
+        bindsym转义模式“默认”
+}
+
+＃锁屏
+bindsym $ mod + 9 exec --no-startup-id模糊锁
+
+＃自动启动应用程序
+exec --no-startup-id / usr / lib / polkit-gnome / polkit-gnome-authentication-agent-1
+exec --no-startup-id氮气--restore;睡1;康普顿-b
+#exec --no-startup-id manjaro-hello
+exec --no-startup-id nm-applet
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id pamac-tray
+exec --no-startup-id剪辑
+＃exec --no-startup-id blueman-applet
+＃exec_always --no-startup-id sbxkb
+exec --no-startup-id start_conky_maia
+＃exec --no-startup-id start_conky_green
+exec --no-startup-id xautolock -time 10 -locker blurlock
+exec_always --no-startup-id ff-theme-util
+exec_always --no-startup-id fix_xcursor
+
+＃用于终端的调色板（〜/ .Xresources文件）
+＃颜色是根据文档收集的：
+＃https://i3wm.org/docs/userguide.html#xresources
+＃在要匹配颜色的位置更改变量名称
+您的终端的编号如下：
+＃[示例]
+＃如果您希望栏与您的栏具有相同的背景色
+＃终端背景将行362从以下位置更改：
+＃背景＃14191D
+＃ 至：
+＃背景$ term_background
+＃相同的逻辑应用于其他所有内容。
+set_from_resource $ term_background背景
+set_from_resource $ term_foreground前景
+set_from_resource $ term_color0 color0
+set_from_resource $ term_color1 color1
+set_from_resource $ term_color2 color2
+set_from_resource $ term_color3 color3
+set_from_resource $ term_color4 color4
+set_from_resource $ term_color5 color5
+set_from_resource $ term_color6 color6
+set_from_resource $ term_color7 color7
+set_from_resource $ term_color8 color8
+set_from_resource $ term_color9 color9
+set_from_resource $ term_color10 color10
+set_from_resource $ term_color11 color11
+set_from_resource $ term_color12 color12
+set_from_resource $ term_color13 color13
+set_from_resource $ term_color14 color14
+set_from_resource $ term_color15 color15
+
+＃启动i3bar以显示工作区栏（如果可用，还要加上系统信息i3status）
+酒吧{
+i3bar_command i3bar
+status_command i3状态
+位置下
+
+##请先设置您的主要输出。示例：“ xrandr --output eDP1 --primary”
+＃tray_output primary
+＃tray_output eDP1
+
+bindsym button4 nop
+bindsym button5 nop
+＃font xft：URWGothic-Book 11
+strip_workspace_numbers是
+
+    颜色{
+        背景＃222D31
+        状态栏＃F9FAF9
+        分隔符＃454947
+
+＃边框表现力。文本
+        focus_workspace＃F9FAF9＃16a085＃292F34
+        active_workspace＃595B5B＃353836＃FDF6E3
+        inactive_workspace＃595B5B＃222D31＃EEE8D5
+        binding_mode＃16a085＃2C2C2C＃F9FAF9
+        Emergency_workspace＃16a085＃FDF6E3＃E5201D
+    }
+}
+
+＃隐藏/取消隐藏i3status条
+bindsym $ mod + m条形模式切换
+
+＃主题颜色
+＃类边框高建群。文字索引。 child_border
+  client.focused＃556064＃556064＃80FFF9＃FDF6E3
+  client.focused_inactive＃2F3D44＃2F3D44＃1ABC9C＃454948
+  client.unfocused＃2F3D44＃2F3D44＃1ABC9C＃454948
+  client.urgent＃CB4B16＃FDF6E3＃1ABC9C＃268BD2
+  client.placeholder＃000000＃0c0c0c #ffffff＃000000
+
+  client.background＃2B2C2B
+
+############################
+i3-gap的###设置：###
+############################
+
+＃设置内部/外部间隙
+内部间隙14
+外部间隙-2
+
+＃另外，您可以使用以下语法发出命令。这对于将键绑定到更改间隙大小很有用。
+＃间隙内部|外部电流|全部设置|正|负<px>
+＃内部所有空隙10
+＃所有外部的缺口加5
+
+＃智能间隙（如果在工作空间中只有多个容器，则使用间隙）
+smart_gaps开启
+
+＃智能边框（仅当容器不是此工作空间中唯一的容器时，才在容器周围绘制边框）
+＃on | no_gaps（on =始终激活，no_gaps =仅在屏幕边缘的间隙大小为0时激活）
+smart_borders开启
+
+＃按$ mod + Shift + g进入间隔模式。选择o或i修改外部/内部间隙。按+ /-（当前工作空间的减号/）或0（删除当前工作空间的间隙）之一。如果您还使用这些键按Shift键，则所有工作区的更改将是全局的。
+设置$ mode_gaps间隙：（o）外部，（i）内部
+设置$ mode_gaps_outer外部空白：+ |-| 0（本地），Shift + + |-| 0（全局）
+设置$ mode_gaps_inner内部空白：+ |-| 0（本地），Shift + + |-| 0（全局）
+bindsym $ mod + Shift + g模式“ $ mode_gaps”
+
+模式“ $ mode_gaps” {
+        bindsym o模式“ $ mode_gaps_outer”
+        bindsym i模式“ $ mode_gaps_inner”
+        bindsym返回模式“默认”
+        bindsym转义模式“默认”
+}
+模式“ $ mode_gaps_inner” {
+        bindsym加间隙内部电流加5
+        bindsym负间隙内部电流负5
+        bindsym 0间隙内部电流设置0
+
+        bindsym Shift + plus内部全部加5的缺口
+        bindsym Shift +负间隙内部全部负5
+        bindsym Shift + 0间隙内部全部设置为0
+
+        bindsym返回模式“默认”
+        bindsym转义模式“默认”
+}
+模式“ $ mode_gaps_outer” {
+        bindsym加间隙外部电流加5
+        bindsym减去间隙外部电流减去5
+        bindsym 0间隙外部电流设置0
+
+        bindsym Shift + plus所有外部加5的间隙
+        bindsym Shift +减去所有负5的外部间隙
+        bindsym Shift + 0外部间隙全部设置为0
+
+        bindsym返回模式“默认”
+        bindsym转义模式“默认”
+} 

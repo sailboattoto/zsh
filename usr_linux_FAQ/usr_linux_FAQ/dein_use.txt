@@ -1,0 +1,3 @@
+dein#add()		:添加插件:dein#add('Shougo/deoplete.nvim')
+dein#begin({base-path}),[{vimrecs}]		:base path 是下载的插件的放置位置
+dein#build([{plugins}])		:为{plugins}生成。{plugins}是插件名称列表

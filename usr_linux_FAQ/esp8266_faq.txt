@@ -1,0 +1,6 @@
+运行push.sh和miniterm.sh报错:
+sudo pip install --ignore-installed pyserial
+
+arch需要安装lib32-libevdev
+sudo pacman -S lib32-libevdev
+

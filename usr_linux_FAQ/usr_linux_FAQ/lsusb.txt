@@ -1,0 +1,6 @@
+需要先安装usbutils才可以使用lsusb命令
+sudo pacman -S usbutils
+
+lsusb 查看所有连接的usb设备
+
+lsusb列出所有设备和其描述符

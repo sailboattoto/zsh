@@ -1,0 +1,3 @@
+installed ycm and coc.nvim
+在使用ycm补全时，会突然弹出错误：OnCompleteDone() 
+这个函数在插件YCM的python/ycm/youcompleteme.py 里，我把调用他的地方注释掉了，就没有弹出错误了

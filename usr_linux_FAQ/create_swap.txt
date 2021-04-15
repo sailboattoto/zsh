@@ -1,0 +1,15 @@
+1.dd if=/dev/zero of=/mnt/swapfile bs=1024 count=2097152
+	or:
+		fallocate --length 2GiB /mnt/swapfile
+
+2.chmod 600 /mnt/swapfile
+
+3.mkswap /mnt/swapfile
+
+4.swapon /mnt/swapfile
+
+5. nvim /etc/fstab 
+	add:
+		/mnt/swapfile swap swap defaults 0 0
+
+6.reboot

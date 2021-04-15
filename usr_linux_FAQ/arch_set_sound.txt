@@ -1,0 +1,9 @@
+sudo pacman -S alsa-utils
+alsamixer
+
+查看声卡: aplay -l
+把下列配置添加到系统级别的 /etc/asound.conf 或用户级别的 ~/.asoundrc 文件
+	defaults.pcm.card 1
+	defaults.pcm.device 0
+	defaults.ctl.card 1
+pcm选项决定用来播放音频的设备，而ctl选项决定那个声卡能够由控制工具（如 alsamixer）使用。

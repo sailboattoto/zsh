@@ -1,0 +1,22 @@
+
+ git config --global http.https://github.com.proxy socks5://127.0.0.1:1086
+git config --global https.https://github.com.proxy socks5://127.0.0.1:1086
+这是指针对 https://github.com 地址设置的代理。如果想针对所有 http/https 设置代理如下：
+
+git config --global http.proxy 'socks5://127.0.0.1:1086'
+git config --global https.proxy 'socks5://127.0.0.1:1086'
+注意：如果设置了针对所有网站的代码，那么会导致一些墙内的网站无法使用 git 访问。比如：公司内部的 gitlab 服务器。所以强烈建议只针对需要翻墙的网站进行代理设置。
+
+设置完成后，可以只用 --list 参数查看配置信息
+
+git config --list
+
+...
+
+http.postbuffer=524288000
+http.https://github.com.proxy=socks5://127.0.0.1:1086
+https.https://github.com.proxy=socks5://127.0.0.1:1086
+取消设置：
+
+git config --global --unset http.https://github.com.proxy
+git config --global --unset https.https://github.com.proxy

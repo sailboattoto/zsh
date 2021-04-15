@@ -1,0 +1,4 @@
+官网的alacritty.yml不知道为什么我使用出错
+由网友提供的alacritty.yml完美运行
+
+终于找到原因了，原来有一行注释windows 要打开,否则不能执行以下配置

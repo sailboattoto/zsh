@@ -1,0 +1,2 @@
+有个问题我也不知道怎么好的，就是Ycm和coc插件冲突，感觉应该下面这条命令解决的
+pip3 install --user python-language-server

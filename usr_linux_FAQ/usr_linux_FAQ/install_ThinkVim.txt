@@ -1,0 +1,3 @@
+on .cache/vim
+on .cache/vimfiler
+on .cache/vimfiles

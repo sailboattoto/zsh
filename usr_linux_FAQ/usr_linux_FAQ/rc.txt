@@ -1,0 +1,619 @@
+＃================================================= ==================
+＃此文件包含Ranger的默认启动命令。
+＃要更改它们，建议创建文件
+＃〜/ .config / ranger / rc.conf并在其中添加您的自定义命令。
+＃
+＃如果您将整个文件复制到此处，则可能需要设置环境
+＃将变量RANGER_LOAD_DEFAULT_RC设置为FALSE，以避免将其加载两次。
+＃
+＃此文件的目的主要是定义按键绑定和设置。
+＃要运行更复杂的python代码，请在“ plugins /”中创建一个插件，或者
+＃在“ commands.py”中输入命令。
+＃
+＃每行都是一条将在用户界面之前运行的命令
+＃已初始化。结果，您不能使用依赖于
+UI上的＃，例如：delete或：mark。
+＃================================================= ==================
+
+＃================================================= ==================
+＃==选项
+＃================================================= ==================
+
+＃应该使用哪种viewmode？可能的值为：
+＃miller：使用miller列显示层次结构的多个级别
+＃multipane：类似于多窗格视图的午夜指挥官，接下来显示所有选项卡
+＃                对彼此
+设置viewmode米勒
+#set viewmode多窗格
+
+＃那里有几列，它们的相对宽度是多少？
+设置column_ratios 1,3,4
+
+＃应该隐藏哪些文件？ （正则表达式）
+设置hidden_​​filter ^ \。| \。（?: pyc | pyo | bak | swp）$ | ^ lost \ + found $ | ^ __（py）？cache __ $
+
+＃显示隐藏文件？您可以通过输入“ zh”来切换
+将show_hidden设置为false
+
+＃运行“删除”命令时要求确认？
+＃有效值为“ always”，“ never”，“ multiple”（默认值）
+＃使用“多个”时，护林员只会询问您是否一次删除多个文件。
+设置never的Confirm_on_delete
+
+＃使用哪个脚本生成文件预览？
+＃Ranger随附scope.sh，这是一个调用外部程序的脚本（请参阅
+＃README.md用于依赖性）预览图像，档案等。
+设置Preview_script〜/ .config / ranger / scope.sh
+
+＃使用外部预览脚本还是显示简单的纯文本或图像预览？
+将use_preview_script设置为true
+
+＃在输入目录之前自动计算目录中的文件？
+将auto_count_files设置为true
+
+＃运行某些图像查看器时打开此目录中的所有图像
+＃喜欢feh或sxiv？您仍然可以通过标记选定文件来打开它们。
+将open_all_images设置为true
+
+＃注意版本控制系统并显示信息。
+设置vcs_aware为true
+
+＃三个后端git，hg，bzr的状态。可能的状态是
+＃禁用，本地（仅显示本地信息），启用（显示本地和远程）
+＃信息）。
+设置vcs_backend_git启用
+设置vcs_backend_hg禁用
+设置vcs_backend_bzr禁用
+
+＃使用受支持的图像预览协议之一
+将Preview_images设置为true
+
+＃设置预览图像方法。支持的方法：
+＃
+＃* w3m（默认）：
+＃使用外部命令“ w3mimgpreview”预览全彩图像吗？
+＃这需要控制台Web浏览器“ w3m”和受支持的终端。
+＃已成功使用不带tmux的“ xterm”和“ urxvt”进行了测试。
+＃
+＃* iterm2：
+＃使用iTerm2图像预览预览全彩图像
+＃（http://iterm2.com/images.html）。这需要使用iTerm2编译
+＃具有图片预览支持。
+＃
+＃* urxvt：
+＃使用urxvt图像背景预览全彩图像。这个
+＃需要使用通过pixbuf支持编译的urxvt。
+＃
+＃* urxvt-full：
+＃与urxvt相同，但不仅利用预览窗格，而且利用
+＃整个终端窗口。
+设置w3m的preview_images_method
+
+＃使用Unicode字符“ ...”标记截止文件名？
+设置unicode_ellipsis为false
+
+＃在书签预览框中显示点文件？
+将show_hidden_​​bookmarks设置为true
+
+＃使用哪种颜色？这些颜色方案默认情况下可用：
+＃默认，丛林，雪，日晒
+设置colorscheme默认
+
+＃在最右边的列预览文件？
+＃如果没有要预览的内容，然后折叠（缩小）最后一列？
+将Preview_files设置为true
+将Preview_directories设置为true
+设置crash_preview为true
+
+＃在退出时保存控制台历史记录吗？
+将save_console_history设置为true
+
+＃在浏览器窗口的顶部绘制状态栏（默认值：底部）
+将status_bar_on_top设置为false
+
+＃在状态栏中绘制进度条，以显示所有状态的平均状态
+＃当前正在运行的支持进度条的任务？
+将draw_progress_bar_in_status_bar设置为true
+
+＃在列周围绘制边框？
+将draw_borders设置为true
+
+＃在选项卡中显示目录名称？
+设置dirname_in_tabs为false
+
+＃启用鼠标支持？
+将mouse_enabled设置为true
+
+＃在主列或状态栏中显示文件大小？
+将display_size_in_main_column设置为true
+将display_size_in_status_bar设置为true
+
+＃在所有列中或仅在主列中显示文件标签？
+将display_tags_in_all_columns设置为true
+
+＃为窗口设置标题？
+将update_title设置为false
+
+＃在tmux程序中将标题设置为“ ranger”吗？
+将update_tmux_title设置为false
+
+＃如果标题太长，请缩短标题？该数字定义了多少
+一次显示＃个目录，0关闭此功能。
+设置short_title 3
+
+＃在Ranger的标题栏（第一行）中用〜缩写$ HOME？
+将tilde_in_titlebar设置为false
+
+＃历史记录中应保留多少个目录更改或控制台命令？
+设置max_history_size 20
+设置max_console_history_size 50
+
+＃滚动时，尝试在上下边框之间保持足够的空间：
+设置scroll_offset 8
+
+＃每次击键后刷新输入？ （在护林员落后时值得注意）
+将flushInput设置为true
+
+＃没有预览时在右侧填充？
+＃这使您可以单击空格以运行文件。
+设置padding_right为true
+
+＃立即保存书签（与mX和`X一起使用）？
+＃这有助于在多个护林员之间同步书签
+＃个实例，但会导致*轻微*性能损失。
+＃如果为false，则退出护林员时将保存书签。
+将autosave_bookmarks设置为true
+
+＃您可以使用以下命令显示目录的“实际”累积大小
+＃command：get_cumulative_size或输入“ dc”。大小很贵
+＃计算并不会自动更新。你可以选择
+＃通过启用此选项自动更新它：
+将autoupdate_cumulative_size设置为false
+
+＃启用此选项对于屏幕阅读器很有意义：
+将show_cursor设置为false
+
+＃以下之一：大小，自然，基本名称，atime，ctime，mtime，类型，随机
+设置自然排序
+
+＃其他排序选项
+将sort_reverse设置为false
+将sort_case_insensitive设置为true
+设置sort_directories_first为true
+将sort_unicode设置为false
+
+＃如果与Alt键组合的键不适合您，请启用此功能。
+＃（特别是在xterm上）
+将xterm_alt_key设置为false
+
+＃是否在cd命令中包含书签
+将cd_bookmarks设置为true
+
+＃避免预览大于此大小的文件（以字节为单位）。使用0到
+＃禁用此功能。
+设置Preview_max_size 0
+
+＃将突出显示的文件添加到标题栏中的路径
+将show_selection_in_titlebar设置为true
+
+＃护林员空闲等待用户输入的延迟（以毫秒为单位），
+＃分辨率为100ms。较低的延迟减少了目录更新之间的延迟，但是
+＃增加CPU负载。
+设置idle_delay 2000
+
+＃当元数据管理器模块查找元数据时，应仅查找
+＃在当前目录中添加一个“ .metadata.json”文件，或者进行深度搜索并
+＃还要检查当前目录之上的所有目录？
+将meta_deep_search设置为false
+
+＃离开目录时清除所有现有过滤器
+将clear_filters_on_dir_change设置为false
+
+＃禁止在主栏中显示行号
+将line_numbers设置为false
+
+＃================================================= ==================
+＃==本地选项
+＃================================================= ==================
+＃您可以设置仅影响单个目录的本地选项。
+
+＃ 例子：
+＃setlocal path =〜/ downloads排序mtime
+
+＃================================================= ==================
+＃==控制台中的命令别名
+＃================================================= ==================
+
+别名e编辑
+别名q退出
+别名q！基多
+别名qa quitall
+别名qall quitall
+别名setl setlocal
+
+别名过滤器侦察器-prt
+别名查找侦察员-aeit
+别名标记侦察员-mr
+别名取消标记侦察员-Mr
+别名搜索侦察员-rs
+别名search_inc scout -rts
+别名旅行侦察员-aefiklst
+
+＃================================================= ==================
+＃==定义浏览器的键
+＃================================================= ==================
+
+＃基本
+地图Q退出！
+地图q退出
+复制图q ZZ ZQ
+
+地图R reload_cwd
+映射<C-r>重设
+映射<C-l> redraw_window
+映射<C-c>中止
+映射<esc> change_mode正常
+地图〜设置viewmode！
+
+映射我display_file
+地图？救命
+地图W display_log
+映射w taskview_open
+地图S shell $ SHELL
+
+地图：控制台
+地图;安慰
+地图！控制台外壳％space
+映射@ console -p6 shell %% s
+map＃控制台外壳-p％space
+地图的控制台外壳程序％space
+映射r链draw_possible_programs;控制台open_with %% space
+#map f控制台find％space
+映射控制台侦察员-ftsea％space
+映射cd控制台cd％space
+
+＃更改线路模式
+映射Mf linemode文件名
+映射Mi linemode fileinfo
+映射Mm linemode mtime
+映射Mp线模式权限
+映射女士linemode sizemtime
+映射Mt线模式字幕
+
+＃标记/标记
+地图t tag_toggle
+映射ut tag_remove
+映射“ <any> tag_toggle标签=％any
+映射<Space> mark_files toggle = True
+map v mark_files all = True toggle = True
+映射uv mark_files all = True val = False
+地图V toggle_visual_mode
+映射uV toggle_visual_mode reverse = True
+
+＃对于怀旧者：午夜指挥官装订
+映射<F1>帮助
+映射<F3> display_file
+地图<F4>编辑
+地图<F5>复制
+映射<F6>剪切
+映射<F7>控制台mkdir％space
+映射<F8>控制台删除
+地图<F10>出口
+
+＃如果您使用具有dvorak布局的键盘
+地图<UP>向上移动= 1
+地图<DOWN>下移= 1
+地图<LEFT>向左移动= 1
+地图<RIGHT>向右移动= 1
+映射<HOME>移到= 0
+地图<END>移至= -1
+地图<PAGEDOWN>下移= 1页=真实
+地图<PAGEUP>向上移动= 1页=真实
+地图<CR>向右移动= 1
+映射<DELETE>控制台删除
+映射<INSERT>控制台touch％space
+
+＃类似于VIM
+复制图<UP> k
+复制地图<DOWN> j
+复制地图<LEFT> h
+复制地图<RIGHT> l
+复制地图<HOME> gg
+复制地图<END> G
+复制地图<PAGEDOWN> <C-F>
+复制地图<PAGEUP> <C-B>
+
+地图J下移= 0.5页=真实
+地图K向上移动= 0.5页=真实
+复制图J <C-D>
+复制图K <C-U>
+
+＃跳来跳去
+地图H history_go -1
+地图L history_go 1
+地图] move_parent 1
+地图[move_parent -1
+映射}遍历
+
+映射gh cd〜
+映射ge cd / etc
+映射gu cd / usr
+映射gd cd / dev
+映射gl cd -r。
+映射gL cd -r％f
+映射去cd / opt
+映射gv cd / var
+地图gm cd / media
+映射gM cd / mnt
+映射gs cd / srv
+地图gr cd /
+映射gR eval fm.cd（ranger.RANGERDIR）
+映射g / cd /
+地图g？ cd / usr / share / doc / ranger
+
+＃外部程序
+地图E编辑
+贴图-p du --max-depth = 1 -h --apparent-size
+映射dU shell -p du --max-depth = 1 -h --apparent-size |排序-rh
+映射yp shell -f echo -n％d /％f | xsel -i; xsel -o | xsel -i -b
+映射yd shell -f echo -n％d | xsel -i; xsel -o | xsel -i -b
+映射yn shell -f echo -n％f | xsel -i; xsel -o | xsel -i -b
+
+＃文件系统操作
+映射= chmod
+
+#map cw控制台重命名％space
+映射cw eval fm.execute_console（“ bulkrename”）如果fm.thisdir.marked_items否则fm.open_console（“ rename”）
+映射一个rename_append
+映射A eval fm.open_console（'rename'+ fm.thisfile.relative_path.replace（“％”，“ %%”））
+映射我ef fm.open_console（'rename'+ fm.thisfile.relative_path.replace（“％”，“ %%”），position = 7）
+
+映射pp粘贴
+映射po paste overwrite = True
+映射pP paste append = True
+map pO paste overwrite = True append = True
+map pl paste_symlink relative = False
+映射pL paste_symlink relative = True
+映射phl paste_hardlink
+映射pht paste_hardlinked_subtree
+映射pr paste_as_root
+
+映射dD控制台删除
+
+映射dd切
+未切割的地图
+映射da cut模式=添加
+映射博士剪切模式=删除
+map dt cut mode =切换
+
+映射副本
+未切割的地图
+映射ya复制模式=添加
+映射年复制模式=删除
+映射和复制模式=切换
+
+＃临时解决方法
+映射dgg eval fm.cut（dirarg = dict（to = 0），narg = quantifier）
+映射dG eval fm.cut（dirarg = dict（to = -1），narg = quantifier）
+map dj eval fm.cut（dirarg = dict（down = 1），narg = quantifier）
+映射dk eval fm.cut（dirarg = dict（up = 1），narg = quantifier）
+映射ygg eval fm.copy（dirarg = dict（to = 0），narg = quantifier）
+映射yG eval fm.copy（dirarg = dict（to = -1），narg = quantifier）
+map yj eval fm.copy（dirarg = dict（down = 1），narg = quantifier）
+map yk eval fm.copy（dirarg = dict（up = 1），narg = quantifier）
+
+＃搜索
+地图/控制台搜索％space
+地图n search_next
+映射N search_next forward = False
+地图ct search_next order =标签
+映射cs search_next order =大小
+map ci search_next order = mimetype
+映射cc search_next order = ctime
+地图cm search_next order = mtime
+映射ca search_next order = atime
+
+＃标签
+映射<C-n> tab_new〜
+映射<C-w> tab_close
+映射<TAB> tab_move 1
+映射<S-TAB> tab_move -1
+地图<A-Right> tab_move 1
+映射<A-左> tab_move -1
+地图gt tab_move 1
+地图gT tab_move -1
+映射gn tab_new〜
+映射gc tab_close
+映射uq tab_restore
+映射<a-1> tab_open 1
+映射<a-2> tab_open 2
+映射<a-3> tab_open 3
+映射<a-4> tab_open 4
+映射<a-5> tab_open 5
+映射<a-6> tab_open 6
+映射<a-7> tab_open 7
+映射<a-8> tab_open 8
+映射<a-9> tab_open 9
+
+＃排序
+映射或设置sort_reverse！
+地图盎司集sort = random
+映射os链集sort = size;设置sort_reverse = False
+映射ob链集sort = basename;设置sort_reverse = False
+映射链集sort = natural;设置sort_reverse = False
+映射om链集sort = mtime;设置sort_reverse = False
+映射oc链集sort = ctime;设置sort_reverse = False
+映射链集set = atime;设置sort_reverse = False
+映射OT链集sort = type;设置sort_reverse = False
+映射oe链集sort = extension;设置sort_reverse = False
+
+映射oS链集sort = size;设置sort_reverse = True
+映射oB链集sort = basename;设置sort_reverse = True
+映射链集sort = natural;设置sort_reverse = True
+映射oM链集sort = mtime;设置sort_reverse = True
+映射oC链集sort = ctime;设置sort_reverse = True
+映射oA链集sort = atime;设置sort_reverse = True
+映射oT链集sort = type;设置sort_reverse = True
+映射oE链集sort = extension;设置sort_reverse = True
+
+映射dc get_cumulative_size
+
+＃设置
+地图zc设置crash_preview！
+映射zd设置sort_directories_first！
+地图zh设置show_hidden！
+映射<C-h>设置show_hidden！
+映射zI设置flushinput！
+地图zi设置Preview_images！
+映射zm设置mouse_enabled！
+映射zp设置Preview_files！
+地图zP设置Preview_Directories！
+地图zs设置sort_case_insensitive！
+映射zu设置autoupdate_cumulative_size！
+地图zv设置use_preview_script！
+映射zf控制台过滤器％space
+
+＃ 书签
+映射`<any> enter_bookmark％any
+映射'<any> enter_bookmark％any
+映射m <any> set_bookmark％any
+映射um <any>取消书签％any
+
+映射m <bg> draw_bookmarks
+复制地图m <bg> um <bg>`<bg>'<bg>
+
+＃使用一些python帮助生成所有chmod绑定：
+在“ rwxXst”中对arg进行评估：cmd（“ map + u {0} shell -f chmod u + {0}％s” .format（arg））
+评估“ rwxXst”中arg的值：cmd（“ map + g {0} shell -f chmod g + {0}％s” .format（arg））
+评估“ rwxXst”中arg的值：cmd（“ map + o {0} shell -f chmod o + {0}％s” .format（arg））
+在“ rwxXst”中对arg进行评估：cmd（“ map + a {0} shell -f chmod a + {0}％s” .format（arg））
+在“ rwxXst”中对arg进行评估：cmd（“ map + {0} shell -f chmod u + {0}％s” .format（arg）
+
+在“ rwxXst”中对arg进行评估：cmd（“ map -u {0} shell -f chmod u- {0}％s” .format（arg）
+评估“ rwxXst”中arg的值：cmd（“ map -g {0} shell -f chmod g- {0}％s” .format（arg））
+“ rwxXst”中arg的eval：cmd（“ map -o {0} shell -f chmod o- {0}％s” .format（arg））
+在“ rwxXst”中对arg进行评估：cmd（“ map -a {0} shell -f chmod a- {0}％s” .format（arg））
+评估“ rwxXst”中arg的值：cmd（“ map-{0} shell -f chmod u- {0}％s” .format（arg）
+
+＃================================================= ==================
+＃==定义控制台键
+＃================================================= ==================
+＃注意：未映射的键直接传递到控制台。
+
+＃基本
+cmap <tab> eval fm.ui.console.tab（）
+cmap <s-tab>评估fm.ui.console.tab（-1）
+cmap <ESC>评估fm.ui.console.close（）
+cmap <CR> eval fm.ui.console.execute（）
+cmap <C-l> redraw_window
+
+复制映射<ESC> <C-c>
+copycmap <CR> <C-j>
+
+＃ 四处走走
+cmap <up>评估fm.ui.console.history_move（-1）
+cmap <向下> eval fm.ui.console.history_move（1）
+cmap <left>评估fm.ui.console.move（left = 1）
+cmap <right> eval fm.ui.console.move（right = 1）
+cmap <home> eval fm.ui.console.move（right = 0，absolute = True）
+cmap <end> eval fm.ui.console.move（right = -1，absolute = True）
+cmap <a-left>评估fm.ui.console.move_word（left = 1）
+cmap <a-right> eval fm.ui.console.move_word（right = 1）
+
+＃行编辑
+cmap <backspace> eval fm.ui.console.delete（-1）
+cmap <删除> eval fm.ui.console.delete（0）
+cmap <C-w>评估fm.ui.console.delete_word（）
+cmap <A-d>评估fm.ui.console.delete_word（backward = False）
+cmap <C-k>评估fm.ui.console.delete_rest（1）
+cmap <C-u>评估fm.ui.console.delete_rest（-1）
+cmap <C-y> eval fm.ui.console.paste（）
+
+＃当然还有emacs的方式
+copycmap <向上> <C-p>
+copycmap <向下> <C-n>
+copycmap <左> <C-b>
+copycmap <右> <C-f>
+copycmap <主页> <C-a>
+copycmap <结束> <C-e>
+copycmap <删除> <C-d>
+copycmap <backspace> <C-h>
+
+＃注意：表示退格有多种方法。 <backspace>（代码263）
+＃和<backspace2>（代码127）。可以肯定的是，请同时使用两者。
+copycmap <backspace> <backspace2>
+
+＃此特殊表达式允许输入数字：
+cmap <allow_quantifiers>否
+
+＃================================================= ==================
+＃==寻呼机键绑定
+＃================================================= ==================
+
+＃运动
+pmap <down> pager_move down = 1
+pmap <up> pager_move up = 1
+pmap <left> pager_move left = 4
+pmap <right> pager_move right = 4
+pmap <home> pager_move = 0
+pmap <end> pager_move to = -1
+pmap <pagedown> pager_move down = 1.0 pages = True
+pmap <pageup> pager_move up = 1.0 pages = True
+pmap <C-d> pager_move down = 0.5 pages = True
+pmap <C-u> pager_move up = 0.5 pages = True
+
+copypmap <UP> k <C-p>
+copypmap <DOWN> j <C-n> <CR>
+copypmap <LEFT> h
+copypmap <RIGHT> l
+copypmap <HOME> g
+copypmap <END> G
+copypmap <C-d> d
+copypmap <C-u> u
+copypmap <PAGEDOWN> n f <C-F> <空格>
+copypmap <PAGEUP> p b <C-B>
+
+＃基本
+pmap <C-l> redraw_window
+pmap <ESC> pager_close
+copypmap <ESC> q Q i <F3>
+pmap E编辑文件
+
+＃================================================= ==================
+＃==任务视图键绑定
+＃================================================= ==================
+
+＃运动
+tmap <up> taskview_move up = 1
+tmap <down> taskview_move down = 1
+tmap <home> taskview_move = 0
+tmap <end> taskview_move to = -1
+tmap <pagedown> taskview_move down = 1.0 pages = True
+tmap <pageup> taskview_move up = 1.0 pages = True
+tmap <C-d> taskview_move down = 0.5 pages = True
+tmap <C-u> taskview_move up = 0.5 pages = True
+
+copytmap <UP> k <C-p>
+copytmap <DOWN> j <C-n> <CR>
+copytmap <HOME> g
+复制地图<END> G
+copytmap <C-u> u
+copytmap <PAGEDOWN> n f <C-F> <空格>
+copytmap <PAGEUP> p b <C-B>
+
+＃更改优先级并删除任务
+tmap J eval -q fm.ui.taskview.task_move（-1）
+tmap K eval -q fm.ui.taskview.task_move（0）
+tmap dd eval -q fm.ui.taskview.task_remove（）
+tmap <pagedown> eval -q fm.ui.taskview.task_move（-1）
+tmap <pageup> eval -q fm.ui.taskview.task_move（0）
+tmap <删除> eval -q fm.ui.taskview.task_remove（）
+
+＃基本
+tmap <C-l> redraw_window
+tmap <ESC> taskview_close
+copytmap <ESC> q Q w <C-c>
+default_linemode devicons
+
+＃ 找
+映射<C-f> fzf_select

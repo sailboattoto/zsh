@@ -1,0 +1,48 @@
+安装完新的系统会生成/boot/grub/grub.cfg
+假设我原来的系统有manjaro,windows(what f**k) 等等
+新安装的系统是archlinux
+一般来说manjaro里应该有windows的引导，因为它是你第二个安装的系统,在/boot/grub/grub.cfg文件下
+然后我们打开新安装的系统，也就是archlinux,它的引导选项里没有manjaro和windows,我们启动archlinux以后
+首先挂载存放manjaro主系统的盘 
+1.$ mount /dev/sda1 /mnt    #我这里是sda1里存放manjaro
+2.用vim打开/mnt/boot/grub/grub.cfg		:$ vim /mnt/boot/grub/grub.cfg		复制以下内容:
+
+	menuentry 'Manjaro Linux' --class manjaro --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-****' {
+		savedefault
+		load_video
+		set gfxpayload=keep
+		insmod gzio
+		insmod part_gpt
+		insmod ext2
+		set root='hd0,gpt1'
+		...
+		...
+	}
+
+	submenu 'Advanced options for Manjaro Linux' $menuentry_id_option 'gnulinux-advanced-***' {
+		menuentry 'Manjaro Linux (Kernel: 5.4.18-1-MANJARO x64)' --class manjaro --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-5.4.18-1-MANJARO x64-advanced-****' {
+		savedefault
+			load_video
+			set gfxpayload=keep
+			insmod gzio
+			insmod part_gpt
+			insmod ext2
+			set root='hd0,gpt1'
+			...
+			...
+	}
+
+	menuentry 'Windows Boot Manager (on /dev/sdb1)' --class windows --class os $menuentry_id_option 'osprober-efi-38E5-DD4A' {
+		savedefault
+		insmod part_gpt
+		insmod fat
+		set root='hd1,gpt1'
+		...
+		...
+	}
+
+	menuentry{} 是个函数，告诉grub引导的系统的名字，以及位置
+	submenu{} 也是一个函数,告诉grub引导这里有两个不同的内核引导
+
+3.用vim打开archlinux的grub:		$ vim /boot/grub/grub.cfg
+将刚才复制的内容粘贴到最下方,保存重启，即可看到见证奇迹的时刻

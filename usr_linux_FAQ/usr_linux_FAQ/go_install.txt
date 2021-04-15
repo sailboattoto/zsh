@@ -1,0 +1,8 @@
+
+export GOROOT="/usr/local/go"
+export GOPATH=$HOME/go
+export GOBIN=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+
+设置完之后重新开机,go install命令才生效
+

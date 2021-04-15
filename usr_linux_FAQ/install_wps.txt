@@ -1,0 +1,14 @@
+1.yaourt -S wps-office
+2.如果安装过程中有出现如下错误（临时目录空间不足）：
+	No space left on device  
+==> ERROR: A failure occurred in package().  
+    Aborting...  
+==> ERROR: Makepkg was unable to build kingsoft-office.  
+==> Restart building kingsoft-office ? [y/N]
+
+解决方式是重新挂载/tmp
+
+mount -t tmpfs -o size=2200M tmpfs /opt/
+
+如果打开WPS应用时报“系统缺失字体...”的错误，可以将相应的字体下载下来放到~/.fonts目录中然后重启WPS即可,也可以用如下命令安装:
+sudo pacman -S ttf-wps-fonts

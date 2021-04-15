@@ -1,0 +1,13 @@
+1.sudo pacman -S xorg
+2.xmodmap -pkg > ~/.xmodmap
+3.xev 查看键值
+4.nvim .xmodmap
+5.在文件顶部加上
+	clear control
+	clear mod1
+	clear lock
+	
+	在文件底部加上
+	add control = Contrl_L Contrl_R
+	add mod1 = Alt_L Alt_R
+6.xmodmap ~/.xmodmap

@@ -1,0 +1,1250 @@
+* dein.txt *深色电源Vim / Neovim插件管理器
+
+版本：2.1
+作者：寿吾<gmail.com的寿吾松>
+许可证：麻省理工学院许可证
+
+================================================== ===========================
+目录*定义内容*
+
+简介|定义介绍|
+用法|定义用法|
+安装| dein-install |
+接口|定义接口|
+  函数|定义函数|
+  变量|定义变量|
+  选项|定义选项|
+  Toml | dein-toml |
+联合资源| dein-unite-sources |
+denite来源| dein-denite-sources |
+配置示例|定义示例|
+常见问题|常见问题解答|
+兼容性|定义兼容性|
+
+
+================================================== ===========================
+简介* dein简介*
+
+* dein *是深色的Vim软件包管理器。它是从完整创建的
+刮。
+
+概念是：
+
+*比NeoBundle更快
+
+*简单
+
+*没有命令，功能仅是简化实施
+
+*易于测试和维护
+
+*不兼容Vundle / NeoBundle
+
+* neovim / Vim8异步API安装支持
+
+*本地插件支持
+
+*非github插件支持
+
+*像克隆目录名称一样去：“ github.com/{user} / {repository}”
+
+*自动合并插件目录，以避免长时间的“ runtimepath”
+
+
+================================================== ===========================
+用法*定义用途*
+
+请参考示例：
+|定义示例|
+
+运行以下命令以更新您的插件：
+>
+：call dein＃update（）
+<
+注意：插件不会自动更新。
+
+================================================== ===========================
+安装*定义安装*
+
+要求：
+* Vim 8.0或更高版本或NeoVim。
+* $ PATH中的“ git”命令（if 要安装github或vim.org插件）
+
+注意：if 您使用Vim 7.4，请改用dein.vim 1.5版。
+
+首先，git克隆存储库。
+
+注意：使用dein之前，必须先定义安装目录。它
+取决于您的用法。
+例如，“〜/ .vim / bundles”或“〜/ .cache / dein”或“〜/ .local / share / dein”。
+dein.vim没有定义默认的安装目录。
+您不得在“〜/ .vim / plugin”下设置安装目录或
+“〜/ .config / nvim / plugin”。
+
+注意：您需要安装git。
+>
+$ mkdir -p〜/ .vim / bundle / repos / github.com / Shougo / dein.vim
+$ git clone https://github.com/Shougo/dein.vim \
+		〜/ .vim / bundle / repos / github.com / Shougo / dein.vim
+		<
+		并设置到存储库目录的路径。
+		>
+		设置runtimepath + = {dein目录的路径}
+		<
+		例：
+		>
+		设置运行时路径+ =〜/ .vim / bundle / repos / github.com / Shougo / dein.vim
+		<
+		现在配置您的捆绑包。 （请参考| dein-examples |）
+
+		调用| dein＃update（）|用于安装插件的功能。
+		>
+		if 需要像安装UI一样的vim-plug，可以使用dein-ui.vim。
+		https://github.com/wsdjeg/dein-ui.vim
+
+
+		================================================== ===========================
+		接口*定义接口*
+
+
+		-------------------------------------------------- ----------------------------
+		功能*定义功能*
+
+* dein＃add（）*
+dein＃add（{repo} [，{options}]）
+初始化插件。
+{repo}是存储库URI或本地存储库目录
+路径。if {repo}以github用户名开头（例如：
+“ Shougo / dein.vim”），dein将安装github插件。
+参见|定义选项| {options}中要设置的内容。
+注意：您必须在| dein＃begin（）|中调用它块。
+
+* dein＃begin（）*
+dein＃begin（{base-path}，[{vimrcs}]）
+初始化dein.vim并开始配置插件
+块。
+{base-path}是放置下载的插件的位置。
+例如，“ Shougo / dein.vim”将在以下位置下载
+“ {base-path} /repos/github.com/Shougo/dein.vim”目录。
+{vimrcs}是比较的.vimrc和/或其他列表
+配置（TOML）文件。缺省值为| $ MYVIMRC |。
+典型的{base-path}是“〜/ .cache / dein”或
+“〜/ .local / share / dein”。
+
+注意：您不得在内部调用函数
+“具有（'vim_starting'）”块。
+
+注意：它会自动执行“：filetype off”。
+
+* dein＃build（）*
+dein＃build（[{plugins}]）
+为{plugins}构建。
+{plugins}是插件名称列表。
+
+* dein＃call_hook（）*
+dein＃call_hook（{hook-name}）
+调用钩子{hook-name}。
+注意：if {hook-name}是“ source”，则dein将调用“ source”
+钩在源插件中。
+
+* dein＃check_install（）*
+dein＃check_install（{plugins}）
+检查插件安装。
+if 未安装{plugins}，它将返回非零值。
+if {plugins}无效，它将返回-1。
+{plugins}是插件名称列表或
+校验。
+if 您省略它，dein将检查所有插件的安装。
+注意：您可以通过|：silent |禁用该消息。
+
+* dein＃check_lazy_plugins（）*
+dein＃check_lazy_plugins（）
+检查无意义的惰性插件。这些插件没有
+“插件/”目录。
+
+* dein＃check_update（）*
+dein＃check_update（[{plugins}]）
+检查插件是否异步更新。
+{plugins}是要检查的插件名称列表。
+if 您省略它，dein将检查所有插件的更新。
+注意：它不返回值，而不是
+| dein＃check_install（）|。
+
+* dein＃check_clean（）*
+dein＃check_clean（）
+返回未使用的插件目录。你可以写
+wrap命令将其删除。
+
+* dein＃clear_state（）*
+dein＃clear_state（）
+手动清除状态文件。
+
+* dein＃config（）*
+dein＃config（{plugin-name}，{options}）
+dein＃config（{options}）
+更改{plugin-name}的插件选项。
+if 省略{plugin-name}，则使用| g：dein＃name |变量。
+if {plugin-name}是列表，则可以在
+多个插件。
+if {plugin-name}已经加载或无效，它将是
+忽略了。
+
+注意：您必须在| dein＃begin（）|中调用它/ | dein＃end（）|
+块。
+>
+call dein＃add（'Shougo / deoplete.nvim'）
+call dein＃config（'deoplete.nvim'，{
+\'lazy'：1，1，'on_i'：1，
+\}）
+	<
+	* dein＃direct_install（）*
+	dein＃direct_install（{repo} [，{options}]）
+	直接安装插件，无需编辑配置。
+	参数与| dein＃add（）|相同。
+	它安装并获取插件。
+	注意：直接安装的插件配置保存在
+	| dein＃get_direct_plugins_path（）|。您可以加载或编辑它。 >
+
+	在没有配置的情况下尝试deoplete。
+	call dein＃direct_install（'Shougo / deoplete.nvim'）
+	<
+	* dein＃disable（）*
+	dein＃disable（{plugins}）
+	禁用{plugins}指定的插件。
+	{plugins}是插件名称列表。
+注意：必须在加载定义命令之前执行此命令
+	插件。
+
+	* dein＃each（）*
+	dein＃each（{command} [，{plugins}]）
+	对{plugins}执行{command}。
+	{plugins}是插件名称列表。
+您可以为插件执行“ git gc”命令。
+
+	* dein＃end（）*
+	dein＃end（）
+	结束定义配置块。
+	您不得使用| dein＃begin（）|中的插件。块。
+	if 启用| g：dein＃auto_recache |，它将执行
+	| dein＃recache_runtimepath（）|自动。
+	注意：| dein＃end（）|之后更改了“ runtimepath”。
+
+	* dein＃get（）*
+	dein＃get（[{plugin-name}]）
+	获取{plugin-name}的插件选项字典。
+	if 省略{plugin-name}，则dein将返回插件
+	字典。关键是插件名称。该值是
+	插件字典。
+
+	* dein＃get_direct_plugins_path（）*
+	dein＃get_direct_plugins_path（）
+	获取直接安装的插件脚本路径。
+
+	* dein＃get_log（）*
+	dein＃get_log（）
+	获取所有以前的安装日志。
+
+	* dein＃get_progress（）*
+	dein＃get_progress（）
+	获取当前更新进度消息。
+
+	* dein＃get_updates_log（）*
+	dein＃get_updates_log（）
+	打印以前的更新日志。
+
+	* dein＃install（）*
+	dein＃install（[{plugins}]）
+	异步安装插件。
+	{plugins}是插件名称列表。
+if 您省略它，则dein将安装所有插件。
+
+	* dein＃is_sourced（）*
+	dein＃is_sourced（{plugin-name}）
+	if {plugin-name}存在并且是来源的，则返回非零值。
+	参见| dein＃source（）|。和| dein＃tap（）|也一样
+
+	* dein＃load_dict（）*
+	dein＃load_dict（{dict}，[{options}]）
+	从{dict}加载插件配置。 {dict}是
+	|字典|。关键是存储库URI，值是
+	|定义选项|字典。参见|定义选项|用于键
+	在{options}中设置。 >
+
+call dein＃load_dict（{
+\'Shougo / denite.nvim'：{}，
+    \'Shougo / deoplete.nvim'：{'name'：'deoplete'}
+\}）
+<
+    * dein＃load_rollback（）*
+    dein＃load_rollback（{rollbackfile} [，{plugins}]）
+    从{rollbackfile}回滚{plugins}。
+    注意：这是危险的命令。
+
+    * dein＃load_state（）*
+    dein＃load_state（{base-path}）
+    从缓存脚本加载dein的状态，
+    位于`dein＃util＃_get_runtime_path（）中。 '/state_'
+    。 fnamemodify（v：progname，'：r'）。 '.vim'`。
+    {base-path}是放置下载的插件的位置。
+注意：必须在| dein＃begin（）|之前调用它。它清除了
+    所有配置。
+    注意：它会完全覆盖您的“运行时路径”，您必须
+    动态更改“ runtimepath”后不调用它。
+    注意：if 加载了dein的状态，则跳过该块。
+
+    if 缓存脚本是旧的或无效的，返回1则
+    找到了。
+    >
+if dein#load_state(path)
+	call dein#begin(path)
+	" My plugins here:
+	" ...
+	call dein#end()
+	call dein#save_state()
+endif
+    <
+    * dein＃load_toml（）*
+    dein＃load_toml（{文件名}，[{选项}]）
+    从{filename}加载TOML插件配置。看到
+    |定义选项|在{options}中设置的键。
+    注意：TOML解析器很慢。您应该将其放在
+    | dein＃load_state（）|和| dein＃save_state（）|中。
+    注意：您需要在| dein＃begin（）|中指定toml文件。
+    论点。
+
+    对于toml文件格式：| dein-toml |
+    >
+let s:toml = '~/test_vim/lazy.toml'
+if dein#load_state('~/test_vim/.cache/dein', [$MYVIMRC, s:toml])
+	call dein#begin('~/test_vim/.cache/dein')
+
+	call dein#load_toml(s:toml, {'lazy': 1})
+
+	call dein#end()
+	call dein#save_state()
+endif
+    <
+    * dein＃local（）*
+    dein＃local（{directory}，[{options}，[{names}]]）
+    将{directory}中的子目录添加到“ runtimepath”，例如
+    “病原体”确实如此。参见|定义选项|用于设置按键
+    {选项}。
+if 给出了{names}，则仅加载{names}目录。
+{names}是|通配符|清单。
+>
+    “从“〜/ .vim / bundle”加载插件。
+    call dein＃local（“〜/ .vim / bundle”）
+    “从“〜/ .vim / bundle”加载plugin1和plugin2。
+    call dein＃local（“〜/ .vim / bundle”，{}，
+    \ ['plugin1'，'plugin2'，'vim- *'，'* .vim']）
+    <
+    * dein＃update（）*
+    dein＃update（[[{plugins}]）
+    安装/更新插件。
+    {plugins}是插件名称列表。
+    if 您省略它，则dein将更新所有插件。
+    注意：if 您使用的是neovim或Vim 8.0+，它将运行
+    异步地。
+
+    * dein＃plugins2toml（）*
+    dein＃plugins2toml（{plugins}）
+    返回{plugins}的toml配置
+    {plugins}是| dein＃get（）|中的插件字典。
+
+    * dein＃reinstall（）*
+    dein＃reinstall（{plugins}）
+    重新安装插件。
+    {plugins}是插件名称列表。
+
+    * dein＃remote_plugins（）*
+    dein＃remote_plugins（）
+    加载还未加载的neovim |远程插件|并执行
+    “：UpdateRemotePlugins”命令。
+    对于dein来说，它比“：UpdateRemotePlugins”更好。
+    注意：仅在neovim中有效。
+
+    * dein＃rollback（）*
+    dein＃rollback（{date} [，{plugins}]）
+    回滚到{plugins}的最新匹配的{date}版本。
+    if {date}为“”，则会回滚到最新版本。
+    {plugins}是插件名称列表。
+    注意：这是危险的命令。
+
+	    * dein＃recache_runtimepath（）*
+	    dein＃recache_runtimepath（）
+	    重新创建dein运行时路径缓存并执行|：helptags |。
+	    安装后会自动调用它。
+
+	    * dein＃save_rollback（）*
+	    dein＃save_rollback（{rollbackfile} [，{plugins}]）
+	    将{plugins}回滚信息保存到{rollbackfile}。
+
+	    * dein＃save_state（）*
+	    dein＃save_state（）
+	    将dein的状态保存在缓存脚本中。
+	    它必须在| dein＃end（）|之后。
+	    注：加载.vimrc时可用。
+	    注意：它会完全保存您的“运行时路径”，您一定不能
+	    动态更改“ runtimepath”后调用它。
+
+	    * dein＃set_hook（）*
+	    dein＃set_hook（{plugins}，{hook-name}，{hook}）
+	    {plugins}是插件名称列表。
+    if 为空列表，则表示所有插件。
+	    在{plugins}中将钩子{hook}设置为{hook-name}。
+	    可以在| dein＃begin（）|之后调用/ | dein＃end（）|块。
+	    注意：if 是| Funcref |，则无法使用
+	    | dein＃load_state（）| / | dein＃save_state（）|块。
+	    >
+	    call dein＃add（'Shougo / neosnippet.vim'，{'lazy'：1}）
+	    功能！ Foo（）中止
+	    终端功能
+	    “不适用于dein＃load_state（）/ dein＃save_state（）块
+	    调用dein＃set_hook（'neosnippet.vim'，'hook_source'，function（'Foo'））
+	    “适用于dein＃load_state（）/ dein＃save_state（）块
+	    调用dein＃set_hook（'neosnippet.vim'，'hook_source'，'echomsg“ foo”'）
+	    <
+	    * dein＃source（）*
+	    dein＃source（[{plugins}]）
+	    |：来源| {plugins}指定的插件。
+	    {plugins}是插件名称列表。
+    if 您省略它，则dein将提供所有插件。
+
+	    * dein＃tap（）*
+	    dein＃tap（{plugin-name}）
+	    if {plugin-name}存在且不存在，则返回非零
+	    禁用的。
+	    初始化| g：dein＃name |和| g：dein＃plugin |变量。
+
+	    -------------------------------------------------- ----------------------------
+	    变量*定义变量*
+
+	    * g：dein＃auto_recache *
+	    g：dein＃auto_recache
+	    if 将其设置为1，请调用| dein＃recache_runtimepath（）|。
+	    保存vimrc，toml文件时，if 需要的话，它会自动运行。
+	    注意：它会重新加载$ ​​MYVIMRC。
+
+	    默认值：0
+
+	    * g：dein＃cache_directory *
+	    g：dein＃cache_directory
+	    要使用的缓存目录。
+
+	    默认值：在您已经指定的基本目录下
+	    通过| dein＃begin（）|。
+
+	    * g：dein＃download_command *
+	    g：dein＃download_command
+	    默认的下载命令。
+
+	    默认值：“ curl --silent --location --output”或“ wget -q -O”
+	    或使用PowerShell。
+
+	    * g：dein＃enable_name_conversion *
+	    g：dein＃enable_name_conversion
+	    if 将其设置为1并省略插件名称，
+	    | dein-options-normalized_name |用作插件名称。
+	    这对于吸收存储库名称的差异很有用。
+
+	    默认值：“ 0”
+
+	    * g：dein＃enable_notification *
+	    g：dein＃enable_notification
+	    if 将其设置为1，则dein将使用通知功能。
+	    您需要以下命令才能使用它。
+
+	    在Windows中：“ Snarl”和“ Snarl_CMD”命令
+	    http://snarl.fullphat.net/
+https://www.tlhan-ghun.de/projects/snarl-command-line-tools/snarl_cmd-exe/
+
+	    在Mac中：“ terminal-notifier”或“ osascript”命令
+	    https://github.com/julienXX/terminal-notifier
+	    注意：tmux中需要“重新附加到用户命名空间”命令。
+
+	    在Linux中：“通知发送”命令
+
+	    默认值：“ 0”
+
+	    * g：dein＃install_max_processes *
+	    g：dein＃install_max_processes
+	    用于定义/安装源的最大进程数
+	    异步更新。
+	    if 小于等于1，则禁用此功能。
+
+	    默认值：“ 8”
+
+	    * g：dein＃install_process_timeout *
+	    g：dein＃install_process_timeout
+	    更新/安装插件时的超时时间（秒）。
+
+	    默认值：“ 120”
+
+	    * g：dein＃install_progress_type *
+	    g：dein＃install_progress_type
+	    安装程序中进度条的输出类型。
+	    注意：if 您想在“状态栏”中显示进度，
+	    您应该使用| dein＃get_progress（）| 。
+
+	    “没有”：
+	    已禁用。
+	    “回声”：
+	    显示在回显区域。
+	    “表格”：
+	    显示在“选项卡”中。
+	    “标题”：
+	    显示在“标题字符串”中。
+	    注意：它仅支持neovim
+
+	    默认值：“ echo”
+
+	    * g：dein＃install_message_type *
+	    g：dein＃install_message_type
+	    安装程序中消息的输出类型。
+
+	    “没有”：
+	    已禁用。
+	    “回声”：
+	    显示在回显区域。
+
+	    * g：dein＃install_log_filename *
+	    g：dein＃install_log_filename
+	    日志文件名。将其设置为“”以禁用日志记录。
+
+	    默认值：“”
+
+	                                                                     * g：dein＃name *
+	    g：dein＃name
+	    当前插件名称。
+	    您只能在| dein＃tap（）|中使用它块。
+	    注意：不建议使用该变量。
+
+	    * g：dein＃notification_icon *
+	    g：dein＃notification_icon
+	    通知图标路径。
+
+	    默认值：“”
+
+	    * g：dein＃notification_time *
+	    g：dein＃notification_time
+	    这是应该在其中显示通知的时间
+	    秒。仅适用于Linux和Windows。
+
+	    默认值：2
+
+	    * g：dein＃plugin *
+	    g：dein＃plugin
+	    当前插件。
+	    您可以在| dein＃tap（）|中使用它阻止或| dein-hooks |。
+
+	    * g：dein＃types＃git＃clone_depth *
+	    g：dein＃types＃git＃clone_depth
+	    “ git clone”的默认历史记录深度。
+	    if 为1，则dein将使用浅克隆功能。
+	    参见| dein-options-type__depth |。
+
+	    默认值：0
+
+	    * g：dein＃types＃git＃command_path *
+	    g：dein＃types＃git＃command_path
+	    用于git类型的“ git”命令路径。
+
+	    默认值：“ git”
+
+	    * g：dein＃types＃git＃default_protocol *
+	    g：dein＃types＃git＃default_protocol
+	    用于git（github）的默认协议。
+	    注意：它仅接受“ https”或“ ssh”。
+
+	    默认值：“ https”
+
+	    * g：dein＃types＃git＃pull_command *
+	    g：dein＃types＃git＃pull_command
+	    git命令用于提取更新。
+
+	    默认值：“ pull --ff --ff-only”
+
+	    -------------------------------------------------- ----------------------------
+	    选项*定义选项*
+	    {options}接受以下键：
+
+    * dein-options-augroup *
+	    augroup（字符串）
+	    插件用于| VimEnter |的augroup名称要么
+	    | GUIEnter | autocmd事件。
+
+	    *定义选项构建*
+	    构建（字符串）
+	    指定构建脚本。
+	    该命令由| system（）|执行。在插件中
+	    运行时路径。
+	    注意：在先前版本的dein中，build也可以是
+	    类型字典，但现在已弃用。
+	    字典，但现在已弃用。
+	    请使用| dein-options-hook_post_update |代替。
+
+	    例：
+	    >
+	    调用dein＃add（'Shougo / vimproc.vim'，{'build'：'make'}）
+	    <
+	    注意：该命令在插件顶层目录中执行。
+	    if 需要cd命令，则必须使用“ sh -c”。 >
+	    call dein＃add（'wincent / command-t'，{
+	    \'build'：
+		    \'sh -c“ cd ruby​​ / command-t && ruby​​ extconf.rb && make”'
+		    \}）
+		    *定义选项取决于*
+		    取决于（列表或字符串）
+		    指定插件依赖的插件列表。
+		    列表项为“ {plugin-name}”。
+		    列表中指定的那些不会自动安装。
+		    注意：非延迟插件无法保证加载顺序。
+
+		    *冻结的选项选项*
+		    冻结（数量）
+		    if 设置为1，则dein不会自动更新。它是
+		    对于无法再更新的过时插件很有用。
+
+		    * dein-options-ftplugin *
+		    ftplugin（词典）
+		    在所有ftplugin之后执行“ _”键。
+		    {filetype} ftplugin执行“ {filetype}”键。
+
+	    *定义选项，if *
+		    if （数字）或（字符串）
+		    if 设置为零，则dein不会注册该插件，即
+		    插件将被禁用。
+		    if 它是String，则dein会评估它。
+		    if 您未设置，dein将注册（启用）插件。
+
+		    * dein-options-lazy *
+		    懒惰的（数字）
+		    if 设置为非零，则dein不会将路径添加到“ runtimepath”
+		    自动。
+		    if 您未设置，dein会在
+		    满足条件。
+		    注意：您不应该指定没有
+		    “ plugin /”目录作为延迟加载插件。没有意义
+		    只会增加开销。你会得到没有意义的
+		    | dein＃check_lazy_plugins（）|创建的惰性插件。
+
+		    *合并的dein-options *
+		    合并（数量）
+		    if 设置为0，则dein不会合并插件目录。它是
+		    对于插件文件冲突很有用。
+
+		    *定义选项名称*
+		    名称（字符串）
+		    指定插件的名称。这用于定义
+		    管理等功能。if 省略，则尾部
+		    将使用存储库名称。
+		    注意：在所有插件中必须唯一。if 插件
+		    名称与另一个插件发生冲突，dein将覆盖
+		    新设置的以前的设置。if 回购尾巴被绑定
+		    发生冲突，您可以手动设置“名称”选项以防止
+		    覆盖现有的插件设置。
+
+		    * dein-options-normalized_name * *
+		    normalized_name（字符串）
+		    指定插件的标准化名称。if 省略，则定义
+		    将规范化存储库名称的尾部。
+		    注意：在所有插件中必须唯一。
+		    标准化名称示例：
+		    名称：规范化名称
+		    >
+		    英石
+		    dein.vim dein
+		    vim-quickrun quickrun
+		    <
+		    * dein-options-on_cmd *
+		    on_cmd（清单）或（字串）
+		    if 与执行的命令匹配，则dein将调用
+		    | dein＃source（）|。
+
+		    *事件中的定义选项*
+		    on_event（字符串）或（列表）
+		    dein将调用| dein＃source（）|在事件上。
+
+		    * dein-options-on_func *
+		    on_func（列表）或（字符串）
+		    if 与调用的函数匹配，则dein将调用
+		    | dein＃source（）|。
+
+		    * dein-options-on_ft *
+		    on_ft（清单）或（字串）
+		    if 与“文件类型”匹配，则dein将调用
+		    | dein＃source（）|。
+
+		    * dei-options-on_i *
+		    on_i（数字）
+		    if 设置为非零，则dein将调用| dein＃source（）|。上
+		    |插入Enter | autocmd。
+		    注意：此选项已弃用。你应该用
+		    | dein-options-on_event |代替。
+
+		    * dein-options-on_idle *
+		    on_idle（数字）
+		    if 设置为非零，则dein将调用| dein＃source（）|。上
+		    |焦点丢失|或| CursorHold | autocmd。
+		    注意：此选项已弃用。你应该用
+		    | dein-options-on_event |代替。
+
+		    *if 在*上定义选项*
+		    on_if（字符串）
+		    if 求值并且非零，则dein将调用
+		    | dein＃source（）|。
+		    默认评估时间为“ BufRead”，“ BufNewFile”，
+		    “ VimEnter”和“ FileType”。
+		    if | dein-options-on_event |存在，它在何时被评估
+		    | dein-options-on_event |。
+
+		    例如：>
+		    打电话给dein＃add（'blueyed / vim-diminactive'，
+		    \ {'on_event'：'WinEnter'，'on_if'：'winnr（“ $”）> 1'}）
+		    <
+		    *地图上的定义选项*
+		    on_map（字典）或（列表）或（字符串）
+		    if 是Dictionary，则键为{mode}，项为
+		    {mapping}或[{mapping1}，{mapping2}，...]。
+	    if 是列表，则项目为{映射}或[{模式}，
+	    {mapping1}，[{mapping2}，...]]。
+	    if 省略{mode}，则使用“ nx”。
+		    注意：您可以使用插件前缀映射。
+		    例如，您可以使用“ <Plug>（ref-””代替
+		    “ <Plug>（引用返回）”，依此类推。
+		    例如：>
+		    打电话给dein＃add（'Shougo / deol.nvim'，
+		    \ {'on_map'：{'n'：'<Plug>'}}）
+		    <
+		    注意：可以将“ <Plug>”关键字用作{mapping}。if 
+		    {mapping}是“ <Plug>”，“ <Plug>（normalized_name”是
+	    用过的。
+		    例如：>
+		    “与”'mappings'：'<Plug>（anzu'
+		    call dein＃add（'osyo-manga / vim-anzu'，{'on_map'：'<Plug>'}）
+		    <
+		    注意：不能两次使用惰性<Plug>映射。
+		    例如：>
+		    打电话给dein＃add（'osyo-manga / vim-anzu'，
+		    \ {'on_map'：'<Plug>（anzu-'}
+	    “不行！！
+		    nmap n <插件>（anzu-jump-n）<插件>（anzu-echo-search-status）zv
+		    nmap N <插件>（anzu-jump-N）<插件>（anzu-echo-search-status）zv
+		    <
+		    * dein-options-on_path *
+		    on_path（列表）或（字符串）
+		    if 设置为“。*”，则dein将调用| dein＃source（）|。在编辑所有
+		    文件。否则，dein将调用| dein＃source（）|。if 
+		    缓冲区名称与字符串模式匹配。
+		    注意：这对于资源管理器行为插件很有用。
+
+		    *源代码中的dein-options *
+		    on_source（清单）或（字串）
+		    在加载列出的插件之前，先加载插件。
+		    注意：插件必须是延迟加载的插件。
+
+		    *定义选项路径*
+		    路径（字符串）
+		    指定插件下载路径。
+
+		    * dein-options-rev *
+		    rev（字串）
+		    指定修订号或分支/标签名称。
+		    if 它是“ git”类型的“ *”，则dein将使用最新发布的标签。
+		    您可以指定通配符，例如“ 0. *”。
+		    注意：if 类型为“原始”，则rev必须为哈希数。
+
+		    例：
+		    >
+		    call dein＃add（'Shougo / deol.nvim'，{'rev'：'a1b5108fd5'}）
+		    <
+		    * dein-options-rtp *
+		    rtp（字符串）
+		    指定运行时路径。
+		    当存储库中有Vim插件时，可以使用它
+		    子目录。
+		    例如：https：//github.com/rstacruz/sparkup
+		    if 为空字符串，则dein不会将路径添加到
+		    'runtimepath'
+
+		    例：
+		    >
+		    call dein＃add（'rstacruz / sparkup'，{'rtp'：'vim'}）
+		    <
+		    * dein-options-script_type *
+		    script_type（字符串）
+		    指定脚本类型。对于非官方的有用
+		    分类的插件。
+		    例如：“缩进”，“插件”，“ ftplugin”，...
+		    注意：不得为分类插件指定它。
+		    例：
+		    >
+		    call dein＃add（
+		    \'https://raw.githubusercontent.com/Shougo/'
+		    \。 'shougo-s-github / master / vim / colors / candy.vim'，
+		    \ {'script_type'：'colors'}）
+		    call dein＃add（
+		    \'https://github.com/bronzehedwick/impactjs-colorscheme'，
+		    \ {'script_type'：'colors'}）
+		    <
+		    *定义选项超时*
+		    超时（数字）
+		    更新/安装插件时的超时时间（秒）。
+		    if 忽略它，| g：dein＃install_process_timeout |将会被使用。
+
+		    *值得信赖的定义选项*
+		    受信任（数字）
+		    if 设置为非零，则dein将以“ sudo”模式加载插件。
+		    if 您未设置，那么dein不会加载它。
+
+		    *定义选项类型*
+		    类型（字符串）
+		    指定存储库类型。if 省略，则进行猜测
+		    基于{repository}。
+
+		    可用的类型：
+		    “无”：无存储库
+		    “ raw”：原始插件文件（“ script_type”属性为
+		    需要）
+		    “ git”：Git
+
+		    *定义选项类型__深度*
+		    类型__depth（数字）
+		    “ git clone”的历史深度。
+		    if 省略，| g：dein＃types＃git＃clone_depth |用来。
+		    if 小于0，则dein会按浅表克隆存储库
+		    克隆。浅克隆功能可节省您的存储库克隆时间。
+		    但是它在某些存储库中存在问题。
+
+		    请参阅以下问题：
+		    https://github.com/Shougo/neobundle.vim/issues/81
+https://github.com/Homebrew/homebrew/issues/12024
+
+		    注意：此属性仅在git类型中可用。
+
+		    -------------------------------------------------- ----------------------------
+		    钩子*戴上钩*
+
+		    字符串将被行分开。
+		    这对于插件初始化很有用。
+		    注意：无法挂钩功能挂钩。你必须
+		    初始化它。
+
+		    注意：您可以使用| g：dein＃plugin |在钩子上。
+		    注意：非延迟插件无法保证加载顺序。
+		    注意：该字符串作为Ex命令执行。
+
+		    * dein-options-hook_add *
+		    hook_add（字符串）或（函数）
+		    在解析行后执行。
+		    注意：您不能在“ hook_add”中调用插件函数。
+		    因为该插件不是在“ hook_add”时获取的。
+		    >
+		    call dein＃add（'Shougo / defx.nvim'，{
+		    \'hook_add'：'nnoremap <silent> [Space] v
+			    \：<C-u> Defx <CR>'
+			    \}）
+			    call dein＃add（'kana / vim-niceblock'，{
+			    \'hook_add'：join（['xmap I <Plug>（niceblock-I）'，
+				    'xmap A <插件>（niceblock-A）']，“ \ n”）
+				    \}）
+				    call dein＃add（'godlygeek / csapprox'，{
+				    \'hook_add'：“
+					    \让g：CSApprox_konsole = 1 \ n
+					    \让g：CSApprox_attr_map =
+					    \ {'bold'：'bold'，'italic'：''，'sp'：''} \ n
+					    \“}）
+					    <
+					    * dein-options-hook_done_update *
+					    hook_done_update（字符串）或（函数）
+					    在所有插件更新后执行。
+
+					    * dein-options-hook_post_source *
+					    hook_post_source（字符串）或（函数）
+					    它是在获取插件后执行的。
+
+					    注意：在Vim初始化中，您必须调用
+					    “ hook_post_source”在| VimEnter |中手动挂接if 需要的话。
+					    >
+					    autocmd VimEnter *调用dein＃call_hook（'post_source'）
+					    <
+					    * dein-options-hook_post_update *
+					    hook_post_update（字符串）或（函数）
+					    在插件更新后执行。
+
+					    * dein-options-hook_source *
+					    hook_source（字符串）或（函数）
+					    它是在获取插件之前执行的。
+					    注意：“源”是指| dein＃end（）|之后。或何时
+					    | VimEnter |或自动加载。
+					    >
+					    调用dein＃add（'artur-shaik / vim-javacomplete2'）
+					    call dein＃config（'artur-shaik / vim-javacomplete2'，{
+					    \'hook_source'：'autocmd FileType java
+						    \ setlocal omnifunc = javacomplete＃Complete'
+						    \}）
+						    功能！ Func（）中止
+						    autocmd FileType qf nnoremap <缓冲区> r：<C-u> Qfreplace <CR>
+						    终端功能
+						    call dein＃source（'thinca / vim-qfreplace'，
+						    \'hook_source'：function（'Func'））
+						    <
+						    注意：非惰性插件的| dein-options-hook_source |不可能是
+						    叫。您必须通过| dein＃call_hook（）|来调用它if 需要的话。
+						    >
+						    call dein＃begin（）
+						    ...
+						    call dein＃end（）
+						    call dein＃call_hook（'source'）
+						    <
+						    -------------------------------------------------- ----------------------------
+						    TOML *去甲香*
+
+						    TOML文件格式规范：
+						    https://github.com/toml-lang/toml
+						    注意：原始TOML解析器由kamichidu创建。
+						    https://github.com/kamichidu
+
+						    * dein-toml-ftplugin *
+						    ftplugin（词典）
+						    在所有ftplugin之后执行“ _”键。
+						    {filetype} ftplugin执行“ {filetype}”键。
+					    您可以通过“ {filetype1} _ {filetype2}”定义多个文件类型
+						    键。自动定义了“ b：undo_ftplugin”。
+
+						    * dein-toml-hook_add *
+						    hook_add（字符串）
+						    这是全局| dein-options-hook_add |。
+						    它在| dein＃end（）|中执行。
+
+						    * dein-toml-plugins *
+						    插件（词典）
+						    它被转换为| dein＃add（）|。
+						    需要“回购”密钥。
+
+						    * dein-toml-example *
+
+						    TOML文件示例在这里：
+						    >
+						    ＃TOML示例
+						    hook_add ='让g：foo = 0'
+
+						    [ftplugin]
+						    ＃在ftplugin之后执行。
+							    _ ='''
+							    setl formatoptions- = ro | setl格式选项+ = mMBl
+							    '''
+							    html ='''
+							    setlocal includeexpr = substitute（v：fname，'^ \\ /'，''，''）
+							    setlocal路径+ =。/; /
+					    '''
+
+						    [[插件]]
+						    repo ='Shougo / neosnippet.vim'
+							    on_i = 1
+							    on_ft ='代码段'
+
+							    [[插件]]
+							    回购='rhysd / accelerated-jk'
+								    on_map ='<插件>'
+								    hook_add ='''
+								    nmap <沉默> j <插件>（accelerated_jk_gj）
+								    nmap <沉默> k <插件>（accelerated_jk_gk）
+								    '''
+								    [plugins.ftplugin]
+								    蟒蛇='''
+									    让b：undo_ftplugin。='setlocal foldmethod <'
+									    setlocal foldmethod =缩进
+									    '''
+
+									    ================================================== ===========================
+									    统一来源* dein-unite-sources *
+
+									    在这里，让我解释一下| unite |的来源。在dein中提供。
+
+									    * dein-unite-source-dein *
+									    定
+									    提名dein插件为候选人。
+
+									    注意：
+									    if 参数为bang（！），则显示插件状态。
+
+									    * dein-unite-source-dein_log *
+									    dein_log
+									    打印以前的Dein安装日志。
+									    您可以在github中跳过diff URI。
+
+									    if 参数1为“！”，则显示更新后的日志。
+
+									    源参数：
+									    1.“！”
+
+									    ================================================== ===========================
+									    denite来源* dein-denite-sources *
+
+									    这里让我解释| denite |的来源。在dein中提供。
+
+									    * dein-denite-source-dein *
+									    定
+									    提名dein插件为候选人。
+
+									    * dein-denite-source-dein-log *
+									    定义/日志
+									    打印以前的Dein安装日志。
+									    您可以在github中跳过diff URI。
+
+									    if 参数1为“！”，则显示更新后的日志。
+
+									    源参数：
+									    1.“！”
+
+									    ================================================== ===========================
+									    例子*定义例子*
+									    >
+									    if 兼容
+									    设置不兼容
+									    万一
+									    设置runtimepath + = {dein.vim目录的路径}
+
+					    if dein＃load_state（{插件基本路径目录的路径}）
+						    call dein＃begin（{插件基本路径目录的路径}）
+
+						    调用dein＃add（{dein.vim目录的路径}）
+						    call dein＃add（'Shougo / deoplete.nvim'）
+						    if ！有（'nvim'）
+						    call dein＃add（'roxma / nvim-yarp'）
+						    call dein＃add（'roxma / vim-hug-neovim-rpc'）
+						    万一
+						    ...
+
+						    call dein＃end（）
+						    调用dein＃save_state（）
+						    万一
+
+						    文件类型插件缩进
+						    语法启用
+						    <
+						    ================================================== ===========================
+						    常见问题解答* dein-faq *
+
+						    问：如何向您捐款？
+
+						    答：我没有收到捐款，但是if 您想捐款，请支持neovim
+						    项目。我的插件取决于neovim开发。
+
+						    https://salt.bountysource.com/teams/neovim
+
+						    问：定义功能中的“：NeoBundleFetch”在哪里？
+
+						    答：您可以使用| dein-options-rtp |。
+						    >
+						    call dein＃add（'Shougo / dein.vim'，{'rtp'：''}）
+						    <
+						    注意：它不会生成|：helptags |。文件。
+
+						    问：手动构建vimproc时不起作用。
+						    https://github.com/Shougo/dein.vim/issues/11
+
+						    答：您不应该手动构建它。请使用| dein-options-build |特征。
+						    >
+						    调用dein＃add（'Shougo / vimproc.vim'，{'build'：'make'}）
+						    <
+						    问：定义功能中的“：NeoBundleCheck”在哪里？
+
+						    答：您可以使用| dein＃check_install（）|。
+						    >
+						    if dein＃check_install（）
+						    call dein＃install（）
+						    万一
+						    <
+						    问：我想禁用插件。
+
+						    答：请使用| dein-options-if |。
+
+						    问：重新加载.vimrc时无法加载colorscheme。
+
+						    答：您必须写|：colorscheme | | dein＃end（）|之后的行。
+						    >
+						    call dein＃add（'tomasr / molokai'，{'merged'：0}）
+						    ...
+
+						    call dein＃end（）
+						    colorscheme莫洛凯
+						    <
+						    或者，您可以使用| dein＃source（）|为了它。
+						    >
+						    call dein＃add（'tomasr / molokai'，{'merged'：0}）
+						    call dein＃source（'molokai'）
+						    colorscheme莫洛凯
+						    <
+						    问：“ jedi-vim”和“ vim-pyenv”“ initialize.py”之间存在冲突。
+						    文件。
+
+						    答：这是插件问题。插件不应创建受限文件
+						    名称文件。但是您可以通过| dein-options-merged |避免问题。
+
+						    问：如何删除禁用的插件？
+
+						    答：您可以按如下所示删除它们。
+						    注意：您必须调用| dein＃recache_runtimepath（）|。删除后。
+						    >
+						    call 地图（dein＃check_clean（），“ delete（v：val，'rf'）”）
+						    call dein＃recache_runtimepath（）
+						    <
+						    问：如何使用脚本函数的挂钩功能？
+
+						    答：您可以像这样使用它们。
+						    注意：不能将脚本功能用于缓存的插件。
+						    SID将在下一次运行中更改。
+						    >
+						    函数s：SID（）
+						    返回matchstr（expand（'<sfile>'），'\ zs <SNR> \ d \ + _ \ zeSID $'）
+						    终极乐趣
+						    功能！ s：test（）
+						    终端功能
+						    打电话给dein＃add（'Shougo / deoplete.nvim'，
+						    \ {'hook_source'：'call'。 s：SID（）。 '测试（）'}）
+						    <
+						    或者，您可以手动执行autocmd。
+						    >
+						    autocmd用户dein＃source＃deoplete.nvim调用s：test（）
+						    call dein＃add（'Shougo / deoplete.nvim'，{
+						    \'hook_source'：
+							    \'执行“ doautocmd <nomodeline>用户”“ dein＃source＃”。
+							    \ g：dein＃plugin.name'
+							    \}）
+							    <
+							    但是您必须定义autocmd。
+
+							    问：我不想call | dein＃recache_runtimepath（）|手动。
+							    答：请指定您的vimrc路径| dein＃begin（）|。第二个论点。
+							    它检测到vimrc的变化。
+							    >
+							    调用dein＃begin（path，[expand（'<sfile>'）]）
+							    <
+							    问：我需要dein.vim的包装器命令。
+
+							    答：可以使用。
+							    https://github.com/haya14busa/dein-command.vim
+
+							    问：为什么安装脚本不使用“ curl | bash”？
+							    https://github.com/Shougo/neobundle.vim/pull/515
+
+							    A：
+							    https://www.idontplaydarts.com/2016/04/detecting-curl-pipe-bash-server-side/
+
+							    问：我想使用“ git”或“ http”协议代替“ https”。
+
+							    答：不可以。
+
+							    问：为什么dein.vim只接受“ https”或“ ssh”？
+
+							    A：https://glyph.twistedmatrix.com/2015/11/editor-malware.html
+
+							    问：YouCompleteMe安装失败。
+							    https://github.com/Shougo/dein.vim/issues/144
+
+A: Please check |:messages| result.
+If you have found "Process timeout" error, you should increase
+|g:dein#install_process_timeout| value.
+
+Q: YouCompleteMe does not work.  I have built YouCompleteMe manually.
+
+A: dein.vim has merge feature.  It copys the plugins into the merge directory.
+So dein.vim does not know the manually built binary.  It does not be copied.
+You should disable the merge feature manually. >
+call dein#add('Valloric/YouCompleteMe', {'merged': 0})
+
+or >
+    call dein#add('Valloric/YouCompleteMe', {'build': './install.py'})
+
+    Q: I have got "Invalid range error" when plugin updating.
+
+    A: It is Vim/neovim |delete()| implementation bug.
+    It uses |glob()| internally.
+    If the directory has contains "[]" files, it will be errored.
+    For example, vimtex has the file.
+    https://github.com/lervag/vimtex/tree/master/test/issues/237/
+
+    You can disable the merge feature to prevent the error. >
+	    call dein#add('lervag/vimtex', {'merged': 0})
+
+
+	    Q: I have got prompted for my github username and I have to kill the editor...
+
+	    A: You have specified wrong/removed repository name.  You should check the
+	    repository.
+
+	    Q: Why dein.vim merges the plugins directories automatically?
+
+	    A: To avoid long 'runtimepath'.  If 'runtimepath' is long, Vim/neovim loading
+	    performance will be bad.
+
+	    Q: I want to update from shell.
+
+	    A: >
+		    $ vim -c "try | call dein#update() | finally | qall! | endtry" \
+			    -N -u $VIMRC -U NONE -i NONE -V1 -e -s
+
+			    Q: I want to change the environment variable when build.
+			    A: >
+				    call dein#add('nixprime/cpsm',
+								    \ {'build': 'sh -c "PY3=ON ./install.sh"'})
+
+
+				    Q: dein.vim does not load plugin in sudo session.
+				    https://github.com/SpaceVim/SpaceVim/issues/1660
+https://github.com/Shougo/dein.vim/issues/274
+
+A:
+				    It is intended behavior for security reason.
+				    In sudo session, installed plugin can do anything in root permission.
+				    It is very dangerous.
+				    But you can load trusted plugins using |dein-options-trusted|.
+
+				    Q: I want to uninstall dein.vim.
+
+				    A: Please remove |dein#begin()|'s argument directory.
+				    For example, if you use below configuration: >
+					    call dein#begin('~/.cache/dein')
+					    Please remove "~/.cache/dein" directory.
+
+					    Q: I want to update dein.vim from shell command line.
+
+					    A: Please execute the command line like this. >
+						    vim -N -u ~/.vim/init.vim -c \
+							    "try | call dein#update() | finally | qall! | endtry" -V1 -es
+
+							    Q: I want to set build conditions.
+
+							    A: Please use |dein-options-hook_post_update|. >
+
+								    [[plugins]]
+									    repo = 'autozimu/LanguageClient-neovim'
+											    hook_post_update = '''
+												    if has('win32') || has('win64')
+														call system(
+																			\ 'powershell -executionpolicy bypass -File install.ps1')
+																    else
+																		call system('bash install.sh')
+																				    endif
+																					    '''
+
+																					    Q: Why I need to call |dein#recache_runtimepath()| manually after removing
+																					    plugins?
+																					    https://github.com/Shougo/dein.vim/issues/357
+
+A: You can use |g:dein#auto_recache| option instead.
+Dein.vim has merge feature.  It copys the plugins into the merge directory.
+You can disable the feature by |dein-options-merged|.  It is like other plugin
+managers behavior.
+Why dein.vim has the feature?  It is for loading performance.
+Other plugin manager adds 'runtimepath' to load external plugins.
+But if 'runtimepath' is very big, plugin loading is slower.  Because Vim needs
+to search all huge 'runtimepath' to load it.  Dein.vim has not the problem.
+
+==============================================================================
+COMPATIBILITY						*dein-compatibility*
+
+==============================================================================
+

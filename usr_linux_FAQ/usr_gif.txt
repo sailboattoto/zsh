@@ -1,0 +1,3 @@
+sudo pacman -S byzanz
+byzanz-record --duration=10 --x=100 --y=100 --width=600 --height=600 output.gif
+sxiv output.gif

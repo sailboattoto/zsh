@@ -1,0 +1,2 @@
+刻盘 of=U盘目录
+sudo dd if=*.iso of=/dev/sdb bs=20M
